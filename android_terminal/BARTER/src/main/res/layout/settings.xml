@@ -1,0 +1,94 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".StatsActivity"
+    android:background="@color/barter_grey">
+
+
+    <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/scrollView"
+            android:layout_alignParentEnd="true"
+
+            android:paddingTop="@dimen/activity_vertical_margin">
+
+        <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@color/light_grey"
+                android:paddingLeft="5dp"
+                android:paddingTop="5dp"
+                android:paddingRight="5dp">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Settings"
+                    android:id="@+id/statsTitle"
+                    android:textSize="24sp"
+                    android:textColor="@color/barter_green_filter"
+                    android:textStyle="bold"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    />
+
+            <LinearLayout
+                    android:id="@+id/linearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/barter_green"
+                    android:orientation="horizontal"
+                    android:layout_below="@+id/statsTitle"
+                    android:layout_alignLeft="@+id/statsTitle"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Loyalty"
+                    android:id="@+id/statsSubTitle1"
+                    android:textSize="18sp"
+                    android:textColor="@color/gray"
+                    android:textStyle="bold"
+                    android:layout_below="@+id/statsTitle"
+                    android:layout_alignLeft="@+id/linearLayout"
+                    android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Please select the type of loyalty scheme you would like to use for your business"
+                android:id="@+id/textView"
+                android:layout_below="@+id/statsSubTitle1"
+                android:textColor="@color/barter_green"
+                android:textSize="12sp" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Average based rating"
+                android:id="@+id/radioButton"
+                android:layout_below="@+id/textView"
+                android:textColor="@color/charcole_gray"
+                android:layout_marginTop="10dp" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Accumulative based rating"
+                android:id="@+id/radioButton2"
+                android:layout_below="@+id/radioButton"
+                android:textColor="@color/charcole_gray"
+                android:layout_marginTop="5dp" />
+
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>

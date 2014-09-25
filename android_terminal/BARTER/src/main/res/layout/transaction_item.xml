@@ -1,0 +1,119 @@
+<RelativeLayout android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/barter_grey"
+                android:descendantFocusability="blocksDescendants"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:paddingBottom="10dp">
+
+    <RelativeLayout
+            android:id="@+id/date_container"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentTop="false"
+            android:background="@color/charcole_gray" >
+
+            <TextView
+                    android:id="@+id/transactionDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:text="@string/date"
+                    android:textColor="@color/barter_green"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textSize="18sp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"/>
+
+            <LinearLayout
+                    android:id="@+id/separator"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/barter_green"
+                    android:orientation="horizontal"
+                    android:layout_below="@+id/transactionDate"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="@string/time"
+                android:id="@+id/transactionTime"
+                android:textColor="@color/light_grey"
+                android:layout_alignBottom="@+id/transactionDate"
+                android:layout_toRightOf="@+id/transactionDate"
+                android:paddingBottom="5dp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:id="@+id/container"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentTop="false"
+            android:background="@color/charcole_gray"
+            android:layout_below="@+id/date_container">
+
+
+
+        <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:id="@+id/transactionImage"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingRight="10dp"
+                android:contentDescription="Image"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/price"
+                android:id="@+id/transactionPrice"
+                android:textColor="@color/barter_grey"
+                android:textSize="30sp"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/transactionImage"
+                android:paddingTop="10dp"
+                />
+
+        <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/transactionPoints"
+                android:layout_alignParentBottom="false"
+                android:layout_alignParentLeft="false"
+                android:numStars="5"
+                style="@style/RatingBarSmallAppTheme"
+                android:layout_toRightOf="@+id/transactionImage"
+                android:layout_below="@+id/transactionPrice"
+                android:stepSize="1"/>
+
+        <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/transactionCheckbox"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:checked="false"
+                android:paddingLeft="10dp"
+                android:paddingTop="60dp"
+                android:paddingRight="20dp"
+                android:layout_alignParentLeft="false"
+                android:layout_alignParentBottom="false"
+                />
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

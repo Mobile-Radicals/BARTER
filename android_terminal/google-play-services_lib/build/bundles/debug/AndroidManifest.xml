@@ -1,0 +1,6 @@
+<!-- From: file:/Users/marklochrie/Dropbox/work/BARTER%20-%20Research%20Associate/mobile/terminal/23_02_2014/BARTERProject/google-play-services_lib/AndroidManifest.xml -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="3265130" android:versionName="3.2.65 (834000-30)" package="com.google.android.gms">
+
+    <uses-sdk android:minSdkVersion="8"/>
+
+</manifest>

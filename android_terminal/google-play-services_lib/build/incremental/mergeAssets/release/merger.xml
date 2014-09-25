@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger>
+
+    <dataSet config="main" >
+        <source path="/Users/marklochrie/Dropbox/work/BARTER - Research Associate/mobile/terminal/23_02_2014/BARTERProject/google-play-services_lib/src/main/assets" />
+    </dataSet>
+    <dataSet config="release" >
+        <source path="/Users/marklochrie/Dropbox/work/BARTER - Research Associate/mobile/terminal/23_02_2014/BARTERProject/google-play-services_lib/src/release/assets" />
+    </dataSet>
+
+</merger>

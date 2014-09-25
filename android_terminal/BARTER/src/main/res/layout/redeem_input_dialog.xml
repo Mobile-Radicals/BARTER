@@ -1,0 +1,70 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:context=".ProfileActivity"
+                android:background="@color/barter_grey"
+                android:padding="10dp">
+
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/input_by_qr"
+        android:id="@+id/button1"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:paddingBottom="10dp"
+        android:drawableLeft="@drawable/qr_icon"
+        android:drawablePadding="2dp"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:textSize="24sp"
+        android:textColor="@drawable/button_text"
+        android:textStyle="bold"
+        android:focusable="false"
+        android:background="@drawable/menu_button_loyalty" />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/input_by_nfc"
+        android:id="@+id/button2"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:paddingBottom="10dp"
+        android:drawableLeft="@drawable/nfc_icon"
+        android:drawablePadding="2dp"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:textSize="24sp"
+        android:textColor="@drawable/button_text"
+        android:textStyle="bold"
+        android:focusable="false"
+        android:background="@drawable/menu_button_loyalty"
+        android:layout_below="@+id/button1"
+        android:layout_marginTop="10dp" />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/input_by_keyboard"
+        android:id="@+id/button3"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:paddingBottom="10dp"
+        android:drawableLeft="@drawable/input_icon"
+        android:drawablePadding="2dp"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:textSize="24sp"
+        android:textColor="@drawable/button_text"
+        android:textStyle="bold"
+        android:focusable="false"
+        android:background="@drawable/menu_button_loyalty"
+        android:layout_below="@+id/button2"
+        android:layout_marginTop="10dp" />
+
+
+</RelativeLayout>
+

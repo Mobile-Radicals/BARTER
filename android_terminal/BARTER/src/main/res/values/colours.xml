@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#FFFFFF</color>
+    <color name="yellow">#FFFF00</color>
+    <color name="fuchsia">#FF00FF</color>
+    <color name="red">#FF0000</color>
+    <color name="silver">#C0C0C0</color>
+    <color name="gray">#808080</color>
+    <color name="olive">#808000</color>
+    <color name="purple">#800080</color>
+    <color name="maroon">#800000</color>
+    <color name="aqua">#00FFFF</color>
+    <color name="lime">#00FF00</color>
+    <color name="teal">#008080</color>
+    <color name="green">#008000</color>
+    <color name="blue">#0000FF</color>
+    <color name="navy">#000080</color>
+    <color name="black">#000000</color>
+    <color name="charcole_gray">#494949</color>
+    <color name="light_grey">#f2f2f2</color>
+    <color name="pale_red">#de7047</color>
+    <color name="pale_red_filter">#99de7047</color>
+    <color name="barter_green">#8dba00</color>
+    <color name="barter_green_filter">#998dba00</color>
+    <color name="barter_grey">#dedcd9</color>
+    <color name="orange">#ee5600</color>
+    <color name="transparent">#00000000</color>
+    <color name="pale_yellow">#f7c90b</color>
+    <color name="pale_yellow_filter">#99f7c90b</color>
+    <color name="light_blue">#afcbe2</color>
+    <color name="light_blue_filter">#99afcbe2</color>
+    <color name="dark_green">#728c03</color>
+    <color name="barter_blue">#176be5</color>
+</resources>

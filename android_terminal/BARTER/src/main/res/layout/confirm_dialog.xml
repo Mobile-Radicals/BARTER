@@ -1,0 +1,112 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:context=".ProfileActivity"
+                android:background="@color/barter_grey"
+                android:padding="10dp">
+
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="SYNC TERMINAL DATA"
+            android:id="@+id/confirmDialogTitle"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="11dp"
+            android:textColor="@color/barter_green"
+            android:textStyle="bold"/>
+
+
+    <LinearLayout
+            android:id="@+id/LL_Seperator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/barter_green"
+            android:orientation="horizontal"
+            android:layout_below="@+id/confirmDialogTitle"
+            android:layout_marginTop="10dp">
+    </LinearLayout>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/are_you_sure"
+            android:id="@+id/confirmDialogDesc"
+            android:textSize="20sp"
+            android:paddingTop="10dp"
+            android:layout_below="@+id/LL_Seperator"
+            android:textColor="@color/charcole_gray"
+            android:singleLine="false"/>
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:paddingLeft="4.0dip"
+            android:paddingTop="5.0dip"
+            android:paddingRight="4.0dip"
+            android:paddingBottom="1.0dip"
+            android:layout_width="fill_parent" android:layout_height="wrap_content"
+            android:layout_below="@+id/confirmDialogDesc2"
+            android:layout_marginTop="10dp"
+            android:id="@+id/buttonBar"
+            android:layout_marginBottom="10dp">
+
+
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cancel"
+                    android:id="@+id/cancelBtn"
+
+                    android:background="@drawable/button_accept"
+                    android:layout_alignParentBottom="false"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/confirmDialogDesc"
+                    android:layout_alignWithParentIfMissing="false"
+                    android:layout_weight="1"
+                    android:layout_marginRight="5dp"/>
+
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="OK"
+                    android:id="@+id/okBtn"
+                    android:layout_alignTop="@+id/cancelBtn"
+                    android:layout_alignParentRight="true"
+                    android:singleLine="false"
+                    android:layout_alignParentStart="false"
+                    android:layout_alignParentEnd="false"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_accept1"
+                    android:layout_marginLeft="5dp"/>
+        </LinearLayout>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Please make sure you have a data connection (Wi-Fi or Mobile Network)"
+            android:id="@+id/confirmDialogFooterDesc"
+            android:textSize="14sp"
+            android:paddingTop="10dp"
+            android:layout_alignParentLeft="true"
+            android:textStyle="italic"
+            android:textColor="@color/barter_green_filter"
+            android:layout_below="@+id/buttonBar"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/please_note"
+            android:id="@+id/confirmDialogDesc2"
+            android:layout_below="@+id/confirmDialogDesc"
+            android:layout_alignParentLeft="true"
+            android:textColor="@color/charcole_gray"
+            android:textSize="16sp"
+            />
+
+</RelativeLayout>
+

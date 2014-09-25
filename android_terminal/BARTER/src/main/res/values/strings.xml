@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">BARTER</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="blank"></string>
+    <string name="title_activity_transaction">Transaction</string>
+    <string name="title_activity_sync">SYNC ACTIVITY</string>
+    <string name="title_activity_stats">TRADER STATS</string>
+    <string name="title_activity_signin">Sign In Activity</string>
+    <string name="title_activity_redeem">MainActivity</string>
+    <string name="title_activity_profile">PROFILE</string>
+    <string name="title_activity_consumer_data">Consumer Activity</string>
+    <string name="transactionBtnTitle">TRANSACTION</string>
+    <string name="redeemBtnTitle">REDEEM</string>
+    <string name="activityBtnTitle">SYNC ACTIVITY</string>
+    <string name="profileBtnTitle">PROFILE</string>
+    <string name="transaction">TRANSACTION</string>
+    <string name="pleaseScan">Please Scan</string>
+    <string name="customer_card">Consumers Card</string>
+    <string name="please_scan">Please Scan</string>
+    <string name="sync_terminal_data">SYNC TERMINAL DATA</string>
+    <string name="are_you_sure">Are you sure you want to resync your data from the server to the terminal?</string>
+    <string name="please_make_sure">Please make sure you have a data connection (Wi-Fi or Mobile Network)</string>
+    <string name="please_note">This will only update the data for your consumers and their totals. It will not delete any transaction data from your terminal. </string>
+    <string name="ok">OK</string>
+    <string name="cancel">CANCEL</string>
+    <string name="signin_text">This application can only be used by registered users. Please login below with the email address and password you registered with BARTER.</string>
+    <string name="login">Log in</string>
+    <string name="signup">Sign up</string>
+    <string name="trader_stats">TRADER STATS</string>
+    <string name="transactions">TRANSACTIONS</string>
+    <string name="web">WEB</string>
+    <string name="total_trans">TOTAL</string>
+    <string name="mobile">MOBILE</string>
+    <string name="zero">0</string>
+    <string name="amounts">AMOUNTS</string>
+    <string name="pound_sign">£</string>
+    <string name="goods">GOODS</string>
+    <string name="services">SERVICES</string>
+    <string name="goods_services">GOODS/SERVICES</string>
+    <string name="date">DATE</string>
+    <string name="time">TIME</string>
+    <string name="price">£9.00</string>
+    <string name="enter_price">0.00</string>
+    <string name="consumer_data">CONSUMER DATA</string>
+    <string name="loyalty">LOYALTY</string>
+    <string name="current_spend">CURRENT SPEND (£)</string>
+    <string name="dummy_value">99.99</string>
+    <string name="number_of_transaction">NUMBER OF TRANSACTIONS</string>
+    <string name="transaction_data">TRANSACTION DATA</string>
+    <string name="points">POINTS</string>
+    <string name="record_sale">RECORD SALE</string>
+    <string name="preferences">UserPreferences</string>
+    <string name="login_url">"http://barterproject.org/mobile_terminal/login.php"</string>
+    <string name="upload_url">"http://barterproject.org/mobile_terminal/uploadTransactions.php"</string>
+    <string name="auto_manual_sync_url">"http://barterproject.org/mobile_terminal/uploadTransactionsForceSync.php"</string>
+    <string name="get_sync_data">"http://barterproject.org/mobile_terminal/requestSync.php"</string>
+    <string name="redeem_url">"http://barterproject.org/mobile_terminal/uploadRedeems.php"</string>
+    <string name="sign_up_url">"http://barterproject.org/registration/"</string>
+    <string name="profile_url">"http://barterproject.org/mobile/profile.php"</string>
+    <string name="title_activity_sign_up">SignUpActivity</string>
+    <string name="logout_title">Log out</string>
+    <string name="desc_one">This will clear all trading and consumer data currently stored in the application.</string>
+    <string name="desc_two">Any data previously uploaded and stored on the server will not be removed.</string>
+    <string name="location_title">Location Service</string>
+    <string name="location_desc_one">No location services are on! Please click OK to turn on Wireless and GPS location services in \'Settings\' by ticking both options.</string>
+    <string name="input_by_key">Input by Keyboard</string>
+    <string name="input_by_nfc">Input by NFC</string>
+    <string name="input_by_qr">Input by QR</string>
+    <string name="input_by_keyboard">Input by Keyboard</string>
+    <string name="input_desc">This can be found etched onto the front of the card, located in between the logo</string>
+    <string name="input_id_title">INPUT ID NUMBER</string>
+    <string name="redeem_points">REDEEM POINTS</string>
+    <string name="redeem_title">REDEEM POINTS</string>
+    <string name="current_points">CURRENT PTS</string>
+    <string name="no_trans">No. TRANS</string>
+    <string name="current_3">CURRENT £</string>
+    <string name="redeem_pts_title">How many points would you like to take off this card?</string>
+    <string name="title_activity_splashscreen">Splashscreen</string>
+
+    <string name="support_url">http://barterproject.org/mobile/support.html</string>
+    <string name="about_url">http://barterproject.org/mobile/about.html</string>
+
+    <string name="no_redeem_points_title">NO POINTS TO REDEEM</string>
+    <string name="no_redeem_points_desc1">It seems as though you have used up all your points with this trader</string>
+    <string name="no_redeem_points_desc2">A detailed history can be found on your BARTER social profile page</string>
+    <string name="no_redeem_points_warning">Sometimes the customers points may differs from the ones on their BARTER social page</string>
+    <string name="alert_redeem_title">REDEEM</string>
+    <string name="redeem_message">You have some points that need syncing with the server</string>
+
+    <string name="wrong_time_title">Wrong Time</string>
+    <string name="wrong_time_msg">It appears that the internal time of your mobile is not configured correctly. It is advised to reconfigure the time settings.</string>
+
+    <string name="auto_sync_title">OUT OF SYNC</string>
+    <string name="auto_sync_msg">It’s been more than 3 days since your device was synced with the server. Would you like to force a manual server re-sync of your customer data?</string>
+    <string name="auto_sync_note">you will not lose any transactions stored on this device.</string>
+    <string name="auto_sync_footer">Please make sure you have a data connection (Wi-Fi or Mobile Network)</string>
+
+    <string name="manual_sync_title">FORCE CUSTOMER DATA SYNC</string>
+    <string name="manual_sync_msg">Are you sure you wish to perform a manual server re-sync of your customer data?</string>
+    <string name="manual_sync_note">you will not lose any transactions stored on this device.</string>
+    <string name="manual_sync_footer">Please make sure you have a data connection (Wi-Fi or Mobile Network)</string>
+
+</resources>

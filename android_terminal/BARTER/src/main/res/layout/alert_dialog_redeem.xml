@@ -1,0 +1,79 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:context=".ProfileActivity"
+                android:background="@color/barter_grey"
+                android:padding="10dp">
+
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/alert_redeem_title"
+            android:id="@+id/alertDialogTitle"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="11dp"
+            android:textColor="@color/pale_yellow"
+            android:textStyle="bold"/>
+
+
+    <LinearLayout
+            android:id="@+id/LL_Seperator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/pale_yellow"
+            android:orientation="horizontal"
+            android:layout_below="@+id/alertDialogTitle"
+            android:layout_marginTop="10dp">
+    </LinearLayout>
+
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/alertDialogImage"
+            android:src="@drawable/card_icon"
+            android:paddingLeft="10dp"
+            android:layout_below="@+id/LL_Seperator"
+            android:layout_alignBottom="@+id/alertDialogDesc2"
+            android:focusable="false"/>
+
+    <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/progressBar"
+            android:layout_alignBottom="@+id/alertDialogTitle"
+            android:layout_alignTop="@+id/alertDialogTitle"
+            android:layout_alignParentStart="false"
+            android:layout_alignParentEnd="true"
+            />
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Please Scan"
+            android:id="@+id/alertDialogDesc"
+            android:textSize="20sp"
+            android:paddingTop="10dp"
+            android:layout_below="@+id/LL_Seperator"
+            android:layout_toRightOf="@+id/alertDialogImage"
+            android:textColor="@color/charcole_gray"
+            android:singleLine="false"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/customer_card"
+            android:id="@+id/alertDialogDesc2"
+            android:textSize="20sp"
+            android:paddingBottom="10dp"
+            android:layout_below="@+id/alertDialogDesc"
+            android:layout_toRightOf="@+id/alertDialogImage"
+            android:textColor="@color/charcole_gray"/>
+
+
+</RelativeLayout>
+

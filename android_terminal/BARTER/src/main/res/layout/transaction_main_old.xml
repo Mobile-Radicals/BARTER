@@ -1,0 +1,334 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                tools:context=".TransactionActivity"
+                android:background="@color/barter_grey">
+
+    <LinearLayout
+            android:id="@+id/LL_Seperator"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@color/charcole_gray"
+            android:orientation="horizontal" >
+    </LinearLayout>
+
+    <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/scrollView"
+            android:layout_alignParentEnd="true"
+
+            android:paddingTop="@dimen/activity_vertical_margin">
+
+        <RelativeLayout
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingBottom="50dp"
+                android:id="@+id/relativeView">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/consumer_data"
+                    android:id="@+id/transactionConsumerTitle"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="24sp"
+                    android:textColor="@color/barter_green_filter"
+                    android:textStyle="bold"/>
+
+           <RelativeLayout android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:background="@drawable/button_normal"
+                           android:padding="10dp"
+                           android:id="@+id/loyaltyBtn"
+                           android:clickable="true"
+                           android:layout_below="@+id/transactionConsumerTitle">
+
+
+
+               <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:textAppearance="?android:attr/textAppearanceMedium"
+                       android:text="@string/loyalty"
+                       android:id="@+id/loyaltyTitle"
+                       android:textColor="@color/charcole_gray"
+                       android:layout_alignParentEnd="false"
+                       android:layout_alignParentStart="false"
+                       android:textSize="18sp"
+                       android:layout_centerHorizontal="true"
+                       android:singleLine="false"/>
+
+               <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="fill_parent"
+                       android:textAppearance="?android:attr/textAppearanceLarge"
+                       android:text="@string/dummy_value"
+                       android:id="@+id/loyaltyValue"
+                       android:gravity="center_vertical|center_horizontal"
+                       android:textSize="38sp"
+                       android:paddingRight="5dp"
+                       android:paddingLeft="5dp"
+                       android:textColor="@color/charcole_gray"
+                       android:layout_below="@+id/loyaltyImage"
+                       android:layout_centerInParent="true"
+                       android:textStyle="bold"/>
+
+               <ImageView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:id="@+id/loyaltyImage"
+                       android:background="@drawable/loyalty_points_icon"
+                       android:layout_below="@+id/loyaltyTitle"
+                       android:layout_centerHorizontal="true"/>
+           </RelativeLayout>
+
+            <RelativeLayout android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/button_normal"
+                            android:padding="10dp"
+                            android:layout_alignParentEnd="true"
+                            android:id="@+id/spendBtn"
+                            android:layout_alignBottom="@+id/loyaltyBtn"
+                            android:layout_alignTop="@+id/loyaltyBtn"
+                            android:clickable="true"
+                            android:layout_toRightOf="@+id/loyaltyBtn"
+                            android:layout_marginLeft="10dp">
+
+                <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="@string/current_spend"
+                        android:id="@+id/spendTitle"
+                        android:textColor="@color/charcole_gray"
+                        android:gravity="right"
+                        android:textSize="12sp"
+                        android:layout_marginTop="10dp"/>
+
+
+
+                <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="@string/dummy_value"
+                        android:id="@+id/spendValue"
+                        android:textStyle="bold"
+                        android:textSize="38sp"
+                        android:layout_below="@+id/spendTitle"
+                        android:textColor="@color/charcole_gray"
+                        android:gravity="right"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="@string/number_of_transaction"
+                        android:id="@+id/numberTitle"
+                        android:textColor="@color/charcole_gray"
+                        android:layout_alignParentEnd="false"
+                        android:layout_alignParentStart="false"
+                        android:textSize="12sp"
+                        android:layout_below="@+id/spendValue"
+                        android:layout_alignRight="@+id/spendValue"
+                        android:gravity="right"
+                        android:layout_alignParentBottom="false"
+                        android:layout_marginTop="10dp"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="@string/dummy_value"
+                        android:id="@+id/numberValue"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="0dp"
+                        android:textSize="38sp"
+                        android:layout_below="@+id/numberTitle"
+                        android:textStyle="bold"
+                        android:textColor="@color/charcole_gray"
+                        android:layout_alignParentEnd="false"
+                        android:layout_alignParentStart="false"
+                        android:layout_alignParentBottom="false"
+                        />
+
+            </RelativeLayout>
+
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/transaction_data"
+                    android:id="@+id/transactionDataTitle"
+                    android:textSize="24sp"
+                    android:layout_below="@+id/loyaltyBtn"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/barter_green_filter"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="10dp"/>
+
+            <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/points"
+                    android:id="@+id/transactionPointsTitle"
+                    android:paddingTop="2dp"
+                    android:layout_alignParentEnd="false"
+                    android:layout_alignParentStart="false"
+                    android:gravity="center_vertical"
+                    android:layout_below="@+id/transactionDataTitle"
+                    android:layout_alignLeft="@+id/transactionDataTitle"
+                    android:background="@color/light_grey"
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/barter_green"
+                    android:textStyle="bold"
+                    android:textSize="24sp"
+                    android:layout_alignBottom="@+id/transactionRatingBar"/>
+
+
+
+            <RatingBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/transactionRatingBar"
+                    android:stepSize="1"
+                    android:numStars="5"
+                    android:layout_alignParentEnd="false"
+                    android:layout_alignParentStart="false"
+                    android:layout_alignRight="@+id/spendBtn"
+                    android:layout_below="@+id/transactionDataTitle"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_alignParentBottom="false"
+                    android:rating="1"/>
+
+            <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/money_container"
+                    android:background="@color/barter_green"
+                    android:padding="10dp"
+                    android:layout_below="@+id/transactionRatingBar"
+                    android:layout_marginTop="20dp">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="£"
+                        android:id="@+id/transactionPoundSign"
+                        android:layout_alignParentEnd="false"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignBottom="@+id/transactionValue"
+                        android:textSize="40dp"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:textColor="@color/barter_grey"
+                        android:textStyle="normal"/>
+
+                <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal"
+                        android:ems="10"
+                        android:id="@+id/transactionValue"
+                        android:layout_toRightOf="@+id/transactionPoundSign"
+                        android:hint="@string/enter_price"
+                        android:textSize="50sp"
+                        android:textStyle="bold"
+                        android:gravity="center_horizontal"
+                        android:textColor="@color/white"/>
+
+            </RelativeLayout>
+
+            <ToggleButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/goodsToggle"
+                    android:background="@drawable/goods_toggle_icon"
+                    android:layout_alignParentTop="false"
+                    android:textOff="@string/blank"
+                    android:textOn="@string/blank"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="50dp"
+                    android:layout_below="@+id/money_container"
+                    android:layout_alignLeft="@+id/money_container"
+                    android:checked="false"/>
+
+            <ToggleButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/servicesToggle"
+                    android:background="@drawable/service_trans_toggle_icon"
+                    android:layout_alignParentTop="false"
+                    android:layout_below="@+id/money_container"
+                    android:textOff="@string/blank"
+                    android:textOn="@string/blank"
+                    android:layout_marginTop="20dp"
+                    android:layout_alignRight="@+id/money_container"
+                    android:layout_marginRight="50dp"
+                    android:checked="false"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/goods"
+                    android:id="@+id/transactionGoodsTitle"
+                    android:layout_alignParentBottom="false"
+                    android:layout_alignParentLeft="false"
+                    android:layout_below="@+id/goodsToggle"
+                    android:layout_alignRight="@+id/goodsToggle"
+                    android:layout_alignLeft="@+id/goodsToggle"
+                    android:gravity="center_horizontal"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/services"
+                    android:id="@+id/transactionServiceTitle"
+                    android:layout_alignParentBottom="false"
+                    android:layout_alignParentLeft="false"
+                    android:layout_below="@+id/servicesToggle"
+                    android:layout_alignRight="@+id/servicesToggle"
+                    android:layout_alignLeft="@+id/servicesToggle"
+                    android:gravity="center_horizontal"/>
+
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/record_sale"
+                    android:id="@+id/recordTransactionBtn"
+                    android:layout_alignLeft="@+id/money_container"
+                    android:layout_below="@+id/transactionGoodsTitle"
+                    android:layout_alignRight="@+id/money_container"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/button_accept"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="30sp"/>
+
+
+
+
+        </RelativeLayout>
+
+
+
+
+
+
+    </ScrollView>
+
+</RelativeLayout>

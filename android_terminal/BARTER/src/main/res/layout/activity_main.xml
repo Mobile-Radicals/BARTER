@@ -1,0 +1,117 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:context=".ProfileActivity"
+                    android:background="@color/barter_grey">
+
+        <LinearLayout
+                android:id="@+id/LL_Seperator"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="@color/charcole_gray"
+                android:orientation="horizontal" >
+        </LinearLayout>
+
+
+    <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/scrollView"
+            android:layout_alignParentEnd="true"
+            android:paddingTop="@dimen/activity_vertical_margin">
+
+        <RelativeLayout
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:id="@+id/relativeView">
+
+            <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/transactionBtnTitle"
+                    android:id="@+id/transactionBtn"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="5dp"
+                    android:paddingBottom="10dp"
+                    android:drawableLeft="@drawable/transaction_icon"
+                    android:drawablePadding="2dp"
+                    android:paddingTop="10dp"
+                    android:paddingLeft="10dp"
+                    android:textSize="30sp"
+                    android:textColor="@drawable/button_text"
+                    android:textStyle="bold"
+                    android:focusable="false"
+                    android:background="@drawable/menu_button_transaction"
+                    />
+
+            <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/activityBtnTitle"
+                    android:id="@+id/activityBtn"
+                    android:layout_marginTop="15dp"
+                    android:drawableLeft="@drawable/activity_icon"
+                    android:drawablePadding="2dp"
+                    android:paddingLeft="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:textSize="30sp"
+                    android:textColor="@drawable/button_text"
+                    android:layout_below="@+id/redeemBtn"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignLeft="@+id/redeemBtn"
+                    android:layout_alignRight="@+id/redeemBtn"
+                    android:background="@drawable/menu_button_activity"
+                    />
+
+            <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/redeemBtnTitle"
+                    android:id="@+id/redeemBtn"
+                    android:layout_marginTop="15dp"
+                    android:drawableLeft="@drawable/loyalty_icon"
+                    android:drawablePadding="2dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="15dp"
+                    android:textSize="30sp"
+                    android:textColor="@drawable/button_text"
+                    android:layout_below="@+id/transactionBtn"
+                    android:layout_alignLeft="@+id/transactionBtn"
+                    android:layout_alignRight="@+id/transactionBtn"
+                    android:background="@drawable/menu_button_loyalty"
+                    android:textStyle="bold"
+                    />
+
+            <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/profileBtnTitle"
+                    android:id="@+id/profileBtn"
+                    android:drawableLeft="@drawable/profile_icon"
+                    android:drawablePadding="2dp"
+                    android:paddingTop="10dp"
+                    android:paddingLeft="15dp"
+                    android:paddingBottom="10dp"
+                    android:textSize="30sp"
+                    android:textColor="@drawable/button_text"
+                    android:layout_below="@+id/activityBtn"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="15dp"
+                    android:layout_alignLeft="@+id/activityBtn"
+                    android:layout_alignRight="@+id/activityBtn"
+                    android:background="@drawable/menu_button_profile"
+                    android:textStyle="bold"/>
+
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>

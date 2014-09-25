@@ -1,0 +1,32 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/action_settings"
+          android:title="Home"
+          android:orderInCategory="100"
+          android:showAsAction="never" />
+
+    <item android:id="@+id/action_settings"
+          android:title="Stats"
+          android:orderInCategory="100"
+          android:showAsAction="never" />
+
+    <item android:id="@+id/manual_sync"
+          android:title="Manual Sync"
+          android:orderInCategory="100"
+          android:showAsAction="never" />
+
+    <item android:id="@+id/action_settings"
+          android:title="Support"
+          android:orderInCategory="100"
+          android:showAsAction="never" />
+
+    <item android:id="@+id/action_settings"
+          android:title="About"
+          android:orderInCategory="100"
+          android:showAsAction="never" />
+
+    <item android:id="@+id/action_settings"
+          android:title="Sign out"
+          android:orderInCategory="100"
+          android:showAsAction="never" />
+
+</menu>

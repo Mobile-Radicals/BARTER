@@ -1,0 +1,194 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".StatsActivity"
+    android:background="@color/barter_grey">
+
+
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/scrollView"
+        android:layout_alignParentEnd="true"
+        android:paddingTop="@dimen/activity_vertical_margin">
+
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/relativeView0">
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:background="@color/light_grey"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"
+            android:paddingRight="5dp"
+            android:id="@+id/relativeView">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/consumer_data"
+                android:id="@+id/transactionConsumerTitle"
+                android:layout_marginBottom="10dp"
+                android:textSize="24sp"
+                android:textColor="@color/barter_green_filter"
+                android:textStyle="bold"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/current_points"
+                android:id="@+id/textView6"
+                android:textColor="@color/charcole_gray"
+                android:textSize="20sp"
+                android:layout_marginLeft="10dp"
+                android:layout_alignTop="@+id/pts"
+                android:layout_alignBottom="@+id/pts"
+                android:gravity="center_vertical" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/zero"
+                android:id="@+id/pts"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:textColor="@color/barter_green"
+                android:textSize="40sp"
+                android:gravity="center_vertical"
+                android:layout_below="@+id/transactionConsumerTitle" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/current_3"
+                android:id="@+id/textView2"
+                android:textSize="20sp"
+                android:textColor="@color/charcole_gray"
+                android:layout_marginLeft="10dp"
+                android:layout_alignTop="@+id/spend"
+                android:layout_alignBottom="@+id/spend"
+                android:gravity="center_vertical" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/no_trans"
+                android:id="@+id/textView3"
+                android:layout_alignParentBottom="false"
+                android:layout_alignParentLeft="false"
+                android:textSize="20sp"
+                android:textColor="@color/charcole_gray"
+                android:layout_alignTop="@+id/trans"
+                android:layout_alignBottom="@+id/trans"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/zero"
+                android:id="@+id/spend"
+                android:textColor="@color/barter_green"
+                android:textSize="40sp"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/pts"
+                android:layout_marginRight="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/zero"
+                android:id="@+id/trans"
+                android:textColor="@color/barter_green"
+                android:textSize="40sp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:layout_below="@+id/spend" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:background="@color/barter_green"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"
+            android:paddingRight="5dp"
+            android:id="@+id/relativeView1"
+            android:layout_below="@+id/relativeView"
+            android:layout_marginTop="10dp">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="REDEEM LOYALTY"
+                android:id="@+id/transactionConsumerTitle2"
+                android:layout_marginBottom="0dp"
+                android:textSize="24sp"
+                android:textColor="@color/white"
+                android:textStyle="bold"/>
+
+            <NumberPicker
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/numberPicker"
+                android:layout_alignParentBottom="false"
+                android:layout_below="@+id/textView"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentLeft="true"
+                android:background="@drawable/numberpicker_selection_divider"
+                android:gravity="center" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="How many points would you like to take off this card?"
+                android:id="@+id/textView"
+                android:layout_alignParentLeft="false"
+                android:layout_below="@+id/transactionConsumerTitle2"
+                android:textSize="13sp" />
+
+        </RelativeLayout>
+
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/redeem_points"
+                android:id="@+id/recordRedeemBtn"
+                android:layout_alignLeft="@+id/relativeView1"
+                android:layout_below="@+id/relativeView1"
+                android:layout_alignRight="@+id/relativeView1"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/button_accept2"
+                android:textColor="@color/white"
+                android:textSize="24sp"/>
+
+    </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

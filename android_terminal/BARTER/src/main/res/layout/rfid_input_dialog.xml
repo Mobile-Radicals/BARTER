@@ -1,0 +1,81 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:context=".ProfileActivity"
+                android:background="@color/barter_grey"
+                android:padding="10dp">
+
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/input_id_title"
+            android:id="@+id/confirmDialogTitle"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="11dp"
+            android:textColor="@color/barter_green"
+            android:textStyle="bold"/>
+
+
+    <LinearLayout
+            android:id="@+id/LL_Seperator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/barter_green"
+            android:orientation="horizontal"
+            android:layout_below="@+id/confirmDialogTitle"
+            android:layout_marginTop="10dp">
+    </LinearLayout>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/input_desc"
+            android:id="@+id/confirmDialogDesc"
+            android:textSize="18sp"
+            android:paddingTop="10dp"
+            android:layout_below="@+id/LL_Seperator"
+            android:textColor="@color/charcole_gray"
+            android:singleLine="false"/>
+
+    <LinearLayout
+            android:orientation="horizontal"
+        android:layout_width="fill_parent" android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+            android:id="@+id/buttonBar"
+            android:layout_marginBottom="10dp"
+        android:layout_below="@+id/editText">
+
+
+        <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="OK"
+                    android:id="@+id/okBtn"
+            android:singleLine="false"
+                    android:layout_alignParentStart="false"
+                    android:layout_alignParentEnd="false"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_accept"
+            android:layout_marginTop="10dp" />
+        </LinearLayout>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText"
+        android:layout_below="@+id/confirmDialogDesc"
+        android:layout_alignLeft="@+id/confirmDialogDesc"
+        android:layout_alignRight="@+id/confirmDialogTitle"
+        android:textColor="@color/charcole_gray"
+        android:background="@drawable/textfield_focused_holo_dark"
+        android:hint="CARD NUMBER"
+        android:layout_marginTop="10dp"
+        android:capitalize="characters"
+        android:singleLine="true"/>
+
+</RelativeLayout>
+
