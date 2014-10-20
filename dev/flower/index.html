@@ -1,0 +1,127 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Untitled Document</title>
+<style>
+html, body {
+  width:  100%;
+  height: 100%;
+  margin: 0px;
+}
+
+</style>
+<script>
+// define Flower constructor
+function Flower(context, centerX, centerY, radius, numPetals, color, dataArray){
+	this.context = context;
+	this.centerX = centerX;
+	this.centerY = centerY;
+	this.radius = radius;
+	this.numPetals = numPetals;
+	this.color = color;
+	this.dataArray = dataArray;
+}
+
+// Define Flower draw method
+Flower.prototype.draw = function(){
+	var context = this.context;	
+	/*context.beginPath();
+	context.moveTo(this.centerX, this.centerY);
+	context.bezierCurveTo(10, window.innerHeight,100, window.innerHeight, window.innerHeight/2, window.innerHeight);
+	context.lineWidth = 15;
+	// line color
+	context.strokeStyle = this.color;
+	context.stroke();
+	context.closePath();*/
+	
+	context.beginPath();
+	// draw petals
+	for (var n = 0; n < this.numPetals; n++) 
+	{
+		//console.log(this.dataArray[n]);
+		var theta1 = ((Math.PI * 2) / this.numPetals) * (n +1);
+		var theta2 = ((Math.PI * 2) / this.numPetals) * (n);
+		var x1 = (this.radius * Math.sin(theta1)) + this.centerX ;
+		var y1 = (this.radius * Math.cos(theta1)) + this.centerY ;
+		var x2 = (this.radius * Math.sin(theta2)) + this.centerX ;
+		var y2 = (this.radius * Math.cos(theta2)) + this.centerY ;
+		context.moveTo(this.centerX, this.centerY);
+		console.log(x1,y1,x2,y2, this.centerX, this.centerY);
+		context.bezierCurveTo(x1, y1, x2, y2, this.centerX, this.centerY);
+	}
+	context.closePath();
+	context.fillStyle = this.color;
+	context.fill();
+	// draw yellow center
+	context.beginPath();
+	context.arc(this.centerX+5, this.centerY-5, this.radius / 5, 0, 2 * Math.PI, false);
+	context.fillStyle = "#f2f2f2";
+	context.fill();
+	context.lineWidth = 10;
+	context.strokeStyle = this.color;
+	context.stroke();
+	context.closePath();
+
+	var textContext = this.context;	
+	textContext.fillStyle = "#696969";
+	textContext.font="50px Verdana";
+	var txt=this.dataArray[1];
+
+	textContext.fillText(txt,this.centerX - (textContext.measureText(txt).width/2), this.centerY + 15);
+	
+	
+	
+};
+
+window.onload = function(){
+	var canvas = document.getElementById("myCanvas");
+	var context = canvas.getContext("2d");
+	context.canvas.width = window.innerWidth;
+	context.canvas.height = window.innerHeight;
+	// create a green gradation for background
+	context.beginPath();
+	context.rect(0, 0, canvas.width, canvas.height);
+	var grd = context.createLinearGradient(0, 0, canvas.width, canvas.height);
+	grd.addColorStop(0, "#f2f2f2"); // light green
+	//grd.addColorStop(1, "#00A747"); // dark green
+	context.fillStyle = grd;
+	context.fill();
+	
+	// define an array of colors
+	//var colorArray = [];
+	//colorArray.push("#8dba00"); // 0
+
+	
+	// define number of flowers
+	var numFlowers = 1;
+	var dataArray = [];
+	dataArray.push(100);
+	dataArray.push(100);
+	dataArray.push(100);
+	dataArray.push(100);
+	dataArray.push(100);
+	
+	// draw randomly placed flowers
+	for (var n = 0; n < numFlowers; n++) {
+		//var centerX = Math.random() * canvas.width;
+		//var centerY = Math.random() * canvas.height;
+		//var radius = (Math.random() * 50) + 100;
+		
+		var centerX =  canvas.width/2 - 50;
+		var centerY =  canvas.height/2 - 50;
+		var radius = 300;
+		//var colorIndex = Math.round(Math.random() * (colorArray.length - 1));
+		//var thisFlower = new Flower(context, centerX, centerY, radius, 5, colorArray[colorIndex]);
+		var thisFlower = new Flower(context, centerX, centerY, radius, 5, "#8dba00", dataArray);
+		thisFlower.draw();
+	}
+};
+</script>
+</head>
+
+<body>
+<canvas id="myCanvas">
+</canvas>
+</body>
+</html>

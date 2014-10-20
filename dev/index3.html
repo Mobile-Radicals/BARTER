@@ -1,0 +1,184 @@
+<html>
+<head>
+<title>Google Maps JavaScript API v3 Example: Common Loader</title>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map-canvas { height: 100% }
+    </style>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBUy5Yna8y5wnB-WrWR23oW2bTK_o-3oJI&sensor=true"></script>
+<script type="text/javascript" src="utils.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+<script type="text/javascript">
+var infowindow;
+var map;
+var moneyPath = [];
+var MY_MAPTYPE_ID = 'custom_style';
+var moneyFlow;
+var bater_pins = [];
+
+function initialize(){
+	
+	var featureOpts=[
+		{
+		  stylers: [
+			/*{ hue: '#000000' },
+			{ visibility: 'simplified' },
+			{ gamma: 0.1 },
+			{ weight: 1 }*/
+			  { color: '#ffffff' }
+		  ]
+		},
+		{
+		  elementType: 'labels',
+		  stylers: [
+			{ visibility: 'off' }
+		  ]
+		},
+		{
+		  featureType: 'water',
+		  stylers: [
+			{ color: '#ffffff' }
+		  ]
+		},
+		{
+		  featureType: 'road',
+		  stylers: [
+			{ color: '#ffffff' },
+			{ weight: 0.6 }
+		  ]
+		}
+	  ];
+		  
+	var mapOptions = {
+		zoom: 15,
+		center: new google.maps.LatLng(53.765310435980915, -2.7185011049732566),
+		zoomControl: true,
+		scaleControl: false,
+		scrollwheel: false,
+		disableDoubleClickZoom: true,
+		disableDefaultUI: true,
+		mapTypeControlOptions: {
+			mapTypeIds: [google.maps.MapTypeId.ROADMAP, MY_MAPTYPE_ID]
+		},
+		mapTypeId: MY_MAPTYPE_ID
+	};
+	
+	var directionSymbol = {
+		path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW
+	};
+  
+	/*var homeSymbol = {
+		path: 'M -2,0 0,-2 2,0 0,2 z',
+		strokeColor: '#8cba3e',
+		fillColor: '#8cba3e',
+		fillOpacity: 1
+	};*/
+  
+	map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+	
+	var styledMapOptions = {
+		name: 'Custom Style'
+	};
+
+	var customMapType = new google.maps.StyledMapType(featureOpts, styledMapOptions);
+  
+  	downloadUrl("points.xml", function(data) 
+	{
+		var markers = data.documentElement.getElementsByTagName("marker");
+		for (var i = 0; i < markers.length; i++) 
+		{
+			var latlng = new google.maps.LatLng(parseFloat(markers[i].getAttribute("lat")), parseFloat(markers[i].getAttribute("lng")));
+			var latlng1 = new google.maps.LatLng(parseFloat(markers[i].getAttribute("lat1")), parseFloat(markers[i].getAttribute("lng1")));
+			//moneyPath.push(latlng);
+			var marker = createMarker(markers[i].getAttribute("name"), latlng, markers[i].getAttribute("icon"));
+			var marker = createMarker(markers[i].getAttribute("name1"), latlng1, markers[i].getAttribute("icon1"));
+			
+			moneyFlow = new google.maps.Polyline({
+			path: [latlng, latlng1],
+			geodesic: false,
+			strokeColor: markers[i].getAttribute("color"),
+			strokeOpacity: 1.0,
+			strokeWeight: 3,
+			clickable: true,
+			polylineID: i,
+			icons: 
+				[/*{
+					icon: homeSymbol,
+					offset: '0%'
+				},*/{
+					icon: directionSymbol,
+					offset: '100%'
+				}],
+				map: map
+			});
+		}
+	});
+	
+		 
+	map.mapTypes.set(MY_MAPTYPE_ID, customMapType);
+	
+	google.maps.event.addListener(map, 'click', function() {
+    	if (infowindow) infowindow.close();
+    });
+
+}
+
+
+
+function createMarker(name, latlng, markerIcon) {
+	
+	
+	var image = {
+		url: markerIcon,
+		// This marker is 20 pixels wide by 32 pixels tall.
+		size: new google.maps.Size(50, 50),
+		// The origin for this image is 0,0.
+		origin: new google.maps.Point(0,0),
+		// The anchor for this image is the base of the flagpole at 0,32.
+		anchor: new google.maps.Point(25, 50)
+	};
+  
+	var marker = new google.maps.Marker({position: latlng, map: map, icon:image, animation: google.maps.Animation.DROP,draggable: false});
+	google.maps.event.addListener(marker, "click", function() {
+		if (infowindow) infowindow.close();
+			var contentString = '<div id="content">'+
+			  '<div id="siteNotice">'+
+			  '</div>'+
+			  '<img src="'+markerIcon+'"/>'+
+			  '<h1 id="firstHeading" class="firstHeading">'+name+'</h1>'+
+			  '<div id="bodyContent">'+
+			  '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
+			  'sandstone rock formation in the southern part of the '+
+			  'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) '+
+			  'south west of the nearest large town, Alice Springs; 450&#160;km '+
+			  '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major '+
+			  'features of the Uluru - Kata Tjuta National Park. Uluru is '+
+			  'sacred to the Pitjantjatjara and Yankunytjatjara, the '+
+			  'Aboriginal people of the area. It has many springs, waterholes, '+
+			  'rock caves and ancient paintings. Uluru is listed as a World '+
+			  'Heritage Site.</p>'+
+			  '<p>Attribution: Uluru, <a href="http://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">'+
+			  'http://en.wikipedia.org/w/index.php?title=Uluru</a> '+
+			  '(last visited June 22, 2009).</p>'+
+			  '</div>'+
+			  '</div>';
+		infowindow = new google.maps.InfoWindow({content: contentString});
+		infowindow.open(map, marker);
+	});
+	return marker;
+	
+}
+
+ 
+
+google.maps.event.addDomListener(window, 'load', initialize);
+
+</script>
+</head>
+<body>
+    <div id="map-canvas"/>
+  </body>
+</html>

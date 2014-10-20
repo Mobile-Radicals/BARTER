@@ -1,0 +1,373 @@
+<html>
+	<head>
+    <meta charset="utf-8" />
+	<style>
+html, body {
+  width:  100%;
+
+  margin: 0px;
+  background-color:#f2f2f2;
+}
+
+.bringToFront
+{
+	z-index: 1;
+}
+
+.btn{
+	height: 100px;
+	width:100%;
+	background-color:#8dba00;
+	color:#f2f2f2;
+	font-size:30px;
+	font-family:BARTERfont;
+	border:none;
+	outline: 0;
+}
+.btn span
+{
+	font-size:14px;
+	color:#696969;
+}
+@font-face
+{
+	font-family: BARTERfont;
+	src: url('http://barterproject.org/config/fonts/b.ttf'),
+     		url('http://barterproject.org/config/fonts/b.woff'); /* IE9 */
+}
+
+#scrollDown
+{
+	height:80px;
+	width:80px;
+	position:fixed;
+  	top: 50%;
+  	right: 0;
+}
+</style>
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="js/d3.js"></script>
+
+    
+	</head>
+	<body>
+    	
+        <button id="runLoop" value="RUN LOOP" class="bringToFront btn">barter loop creator<br /><span>click to generate</span></button>
+        <button id="scrollDown" class="bringToFront btn">></button>
+		
+        <canvas id="mycanvas" />
+		
+		<script type="text/javascript">
+		
+		var canvas = document.getElementById("mycanvas");
+		var ctx = canvas.getContext("2d");
+		var centerX = 0;
+		var centerY = 0;
+		var transPrices=[];
+		var recycledValue = 0;
+		var total = 0;
+		var allTraders = [];
+		
+		document.getElementById("scrollDown").onclick = function () { 
+			window.scrollBy(0,window.innerHeight/2 + 150);
+		}
+
+		document.getElementById("runLoop").onclick = function () { 
+				
+			//clear the array 
+			transPrices = [];
+			total = 0;
+	
+			var lower_bound = 3,
+				upper_bound = 8;
+					
+			var noTrans = Math.round(Math.random()*(upper_bound - lower_bound) + lower_bound);
+			//randomise the transaction vlues 		
+			for (var j=0;j<noTrans;j++)
+			{
+				transPrices.push(Math.round(Math.random()*100) + 1);
+				allTraders.push(j+1);
+			}
+			
+			allTraders = shuffle(allTraders);
+			console.log(allTraders);
+			
+			ctx.canvas.width = window.innerWidth;
+			ctx.canvas.height = window.innerHeight + (window.innerHeight/1.5) * noTrans;
+			//alert("screen h: "+ctx.canvas.height);
+			centerX =  canvas.width/2;
+			centerY =  canvas.height/2;	
+		
+		
+			//flower stem
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+			ctx.beginPath();
+			ctx.moveTo(centerX, ctx.canvas.height-300);
+			//ctx.bezierCurveTo(10, window.innerHeight,100, window.innerHeight, window.innerHeight/2, window.innerHeight);
+			ctx.lineTo(centerX, ctx.canvas.height);
+			ctx.lineWidth = 7;
+			ctx.strokeStyle = "#8dba00";
+			ctx.stroke();
+			ctx.closePath();
+			
+			//console.log(transPrices);
+			//get the smallest value inside the loop
+			recycledValue = Math.min.apply(Math,transPrices);
+			//console.log("recycled value: "+recycledValue);
+		
+			var dataArray = [];
+			var max = d3.max(transPrices);
+			var scale = d3.scale.linear().domain([0, max]).range([40, 100]);
+			for ( var i in transPrices ){
+				//console.log(scale(arr[i]));
+				dataArray.push(scale(transPrices[i]));
+			}
+			//console.log(dataArray);
+			/*transPrices = transPrices.sort(function(a,b){
+				return a-b;
+			});*/
+		
+			//get the total in the loop
+			console.log(transPrices);
+			$.each(transPrices,function() {
+				total += this;
+			});
+			
+			drawNodes(noTrans);
+			
+			for (var i = 0; i < dataArray.length; i++) {
+			  var _angle = 2*i*Math.PI/dataArray.length;
+			  var _colour = "#8dba00";
+			  drawPetal(centerX,ctx.canvas.height-300,_angle,dataArray[i],_colour);
+			}
+					
+			var pistilSize = 24;
+					
+			ctx.beginPath();
+			ctx.arc(centerX, ctx.canvas.height-300, pistilSize  , 0, 2 * Math.PI, false);
+			ctx.fillStyle = "#f2f2f2";
+			ctx.fill();
+			ctx.lineWidth = 2;
+			ctx.strokeStyle = "#f2f2f2";
+			ctx.stroke();
+			ctx.closePath();
+			
+			ctx.beginPath();
+			ctx.fillStyle = "#696969";
+			ctx.font=pistilSize+"px Verdana";
+			var txt="£"+Math.round(recycledValue);
+			ctx.fillText(txt,centerX - (ctx.measureText(txt).width/2), (ctx.canvas.height-300) + (pistilSize/2.5));	
+			ctx.closePath();				
+		};
+		
+		function drawNodes(noNodes) {
+
+			var radius = 50; 
+			var lineWidth = 30;
+			//work out the center point of all the nodes
+			var centerOffset = (centerX-(radius*2+ lineWidth) * noNodes/2);
+			//console.log(centerOffset);
+			var lastPosX = centerOffset;
+			var lastPosY = window.innerHeight/2;
+			var lineThickness = 6;
+			var recycledHighlightColor = "";
+			var allLastPosX = [centerOffset];
+			var allLastPosY = [100];
+			
+			for (var x=1; x <=noNodes; x++){
+				
+				lineThickness = 6;
+				recycledHighlightColor="#8dba00";
+					
+				for (var y=1; y <= x; y++ ){
+					
+					if (y != x)
+					{
+						//draw a line to connect the nodes
+						ctx.beginPath();
+						ctx.moveTo(allLastPosX[y-1], lastPosY);
+						//ctx.bezierCurveTo(10, window.innerHeight,100, window.innerHeight, window.innerHeight/2, window.innerHeight);
+						ctx.lineTo(allLastPosX[y-1]+radius+lineWidth*2,lastPosY);
+						ctx.lineWidth = lineThickness;
+						ctx.strokeStyle = recycledHighlightColor;
+						ctx.stroke();
+						ctx.closePath();
+						
+						/*ctx.beginPath();
+						ctx.lineTo(allLastPosX[y-1]+radius+lineWidth*2,lastPosY);
+						ctx.lineWidth = lineThickness;
+						ctx.strokeStyle = recycledHighlightColor;
+						ctx.stroke();
+						ctx.closePath();*/
+						
+						//show the value of the transaction
+						ctx.beginPath();
+						ctx.fillStyle = recycledHighlightColor;
+						ctx.font=20+"px Verdana";
+						ctx.font.bold();
+						var txt="£"+transPrices[y-1];
+						ctx.fillText(txt,(allLastPosX[y-1]+radius+lineWidth) - (ctx.measureText(txt).width/2) , lastPosY - 20);
+						ctx.closePath();			
+						//console.log("pos"+y+" posX "+allLastPosX[y-1]+" posY "+allLastPosY[y-1]);
+					}
+					
+					ctx.beginPath();
+					ctx.arc(allLastPosX[y-1], lastPosY, radius, 0, 2 * Math.PI, false);
+					ctx.fillStyle = '#8dba00';
+					ctx.fill();
+					ctx.lineWidth = 1;
+					ctx.strokeStyle = '#696969';
+					ctx.stroke();
+					ctx.closePath();	
+					
+					ctx.beginPath();
+					ctx.fillStyle = "#f2f2f2";
+					ctx.font=30+"px Verdana";
+					ctx.font.bold();
+					var txt="T"+allTraders[y-1];
+					ctx.fillText(txt,allLastPosX[y-1] - (ctx.measureText(txt).width/2) , lastPosY+10);	
+					ctx.closePath();	
+					//alert("pos"+y+" posX "+allLastPosX[y-1]+" posY "+allLastPosY[y-1]);
+					
+				}
+				
+				if (x == noNodes)
+				{
+					//last node in the chain
+					ctx.beginPath();
+					ctx.moveTo(lastPosX, lastPosY);
+					//ctx.bezierCurveTo(10, window.innerHeight,100, window.innerHeight, window.innerHeight/2, window.innerHeight);
+					//ctx.bezierCurveTo(lastPosX+radius+lineWidth*2, lastPosY+ 200, centerOffset, lastPosY + 200, centerOffset,lastPosY);
+					ctx.bezierCurveTo(lastPosX, lastPosY+200, centerOffset, lastPosY+200, centerOffset,lastPosY+radius);
+					ctx.lineWidth = lineThickness;
+					ctx.strokeStyle = recycledHighlightColor;
+					ctx.stroke();
+					ctx.closePath();
+					
+					/*ctx.beginPath();
+					ctx.fillStyle = recycledHighlightColor;
+					ctx.font=20+"px Verdana";
+					ctx.font.bold();
+					var txt="£"+transPrices[x-1];
+					ctx.fillText(txt,lastPosX - (ctx.measureText(txt).width/2)+20, 300);
+					ctx.closePath();*/
+				}
+				
+				lastPosX += radius*2 + 60;
+				allLastPosX.push(lastPosX);
+				lastPosY += radius*2 + window.innerHeight/2;
+				allLastPosY.push(lastPosY);
+				
+				drawFinalLoop(noNodes, radius, lineWidth, centerOffset, allLastPosY[noNodes] + 200)
+			}	
+		}	
+			
+		function drawFinalLoop(noNodes, radius, lineWidth, centerOffset, finalPosY) {
+			
+			var lastPoxX = centerOffset;
+			
+			for (var x=1; x <=noNodes; x++){
+			
+				if (transPrices[x-1] == recycledValue){
+					lineThickness = 3;
+					recycledHighlightColor="#696969";
+				}else{
+					lineThickness = 6;
+					recycledHighlightColor="#8dba00";
+				}
+					
+				if (x != noNodes){
+					ctx.beginPath();
+					ctx.moveTo(lastPoxX, finalPosY);
+					//ctx.bezierCurveTo(10, window.innerHeight,100, window.innerHeight, window.innerHeight/2, window.innerHeight);
+					ctx.lineTo(lastPoxX+radius+lineWidth*2,finalPosY);
+					ctx.lineWidth = lineThickness;
+					ctx.strokeStyle = recycledHighlightColor;
+					ctx.stroke();
+					ctx.closePath;
+					
+					ctx.beginPath();
+					ctx.lineTo(lastPoxX+radius+lineWidth*2,finalPosY);
+					ctx.lineWidth = lineThickness;
+					ctx.strokeStyle = recycledHighlightColor;
+					ctx.stroke();
+					ctx.closePath();
+					
+					ctx.beginPath();
+					ctx.fillStyle = recycledHighlightColor;
+					ctx.font=20+"px Verdana";
+					ctx.font.bold();
+					var txt="£"+transPrices[x-1];
+					ctx.fillText(txt,(lastPoxX+radius+lineWidth) - (ctx.measureText(txt).width/2) , finalPosY - 20);			
+				}
+				else{
+					//last node in the chain
+					ctx.beginPath();
+					ctx.moveTo(lastPoxX, finalPosY);
+					//ctx.bezierCurveTo(10, window.innerHeight,100, window.innerHeight, window.innerHeight/2, window.innerHeight);
+					//ctx.bezierCurveTo(lastPoxX, finalPosY + 100, centerOffset, finalPosY + 50, centerOffset, finalPosY + 100);
+					ctx.bezierCurveTo(lastPoxX, finalPosY+200, centerOffset, finalPosY+200, centerOffset,finalPosY+radius);
+					ctx.lineWidth = lineThickness;
+					ctx.strokeStyle = recycledHighlightColor;
+					ctx.stroke();
+					ctx.closePath();
+					
+					ctx.beginPath();
+					ctx.fillStyle = recycledHighlightColor;
+					ctx.font=20+"px Verdana";
+					ctx.font.bold();
+					var txt="£"+transPrices[x-1];
+					ctx.fillText(txt,lastPoxX - (ctx.measureText(txt).width/2)+20, finalPosY + 100);
+				}
+				
+				ctx.beginPath();
+				ctx.arc(lastPoxX, finalPosY, radius, 0, 2 * Math.PI, false);
+				ctx.fillStyle = '#8dba00';
+				ctx.fill();
+				ctx.lineWidth = 1;
+				ctx.strokeStyle = '#696969';
+				ctx.stroke();
+				ctx.closePath();
+				
+				ctx.beginPath();
+				ctx.fillStyle = "#f2f2f2";
+				ctx.font=30+"px Verdana";
+				ctx.font.bold();
+				var txt="T"+allTraders[x-1];
+				ctx.fillText(txt,lastPoxX - (ctx.measureText(txt).width/2) , finalPosY + 10);	
+				ctx.closePath();
+				lastPoxX += radius*2 + 60;
+			}	
+			
+			ctx.beginPath();
+			ctx.fillStyle = "#696969";
+			ctx.font="20px Verdana";
+			ctx.font.bold();
+			var txt="Loop gross value: £"+Math.round(total);
+			var txt1="Recycled Money: £"+Math.round(recycledValue);
+			ctx.fillText(txt,centerX - (ctx.measureText(txt).width/2), finalPosY + 240);
+			ctx.fillText(txt1,centerX - (ctx.measureText(txt1).width/2), finalPosY + 300);
+			ctx.closePath();
+		}
+		
+		function drawPetal(x,y,angle,height, colour) {
+		  ctx.save();
+		  ctx.fillStyle = colour;
+		  ctx.translate(x,y);
+		  ctx.rotate(angle);
+		  ctx.beginPath();
+		  ctx.moveTo(0,0);
+		  ctx.bezierCurveTo(-height/2,-.7*height,-height/6,-height,0,-height);
+		  ctx.bezierCurveTo(height/6,-height,height/2,-.7*height,0,0);
+		  ctx.fill();
+		  ctx.restore();
+		}	
+
+		function shuffle(o){ //v1.0
+			for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+			return o;
+		};
+		</script>
+		
+	</body>
+</html>

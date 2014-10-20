@@ -1,0 +1,138 @@
+<html>
+<head>
+<style type="text/css">
+html {
+  height: 100%
+}
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0
+}
+#map_canvas {
+  height: 100%
+}
+</style>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBUy5Yna8y5wnB-WrWR23oW2bTK_o-3oJI&sensor=false&libraries=visualization"></script>
+<script language="javascript">
+ var line;
+ var myLatlng = new google.maps.LatLng(41.7833, 5.2167);
+ var marker;
+function initialize(){
+var styles = [
+  {
+    "featureType": "administrative.country",
+    "stylers": [
+      { "visibility": "off" }
+    ]
+  },{
+    "featureType": "administrative",
+    "elementType": "geometry",
+    "stylers": [
+      { "visibility": "off" }
+    ]
+  },{
+    "featureType": "landscape",
+    "stylers": [
+      { "visibility": "on" },
+      { "color": "#C0C0C0" }
+    ]
+  },{
+    "featureType": "water",
+    "stylers": [
+      { "visibility": "on" },
+      { "color": "#FFFFFF" }
+    ]
+  },{
+    "featureType": "landscape.man_made",
+    "stylers": [
+      { "visibility": "off" },
+      { "color": "#efffff" }
+    ]
+  },{
+    "featureType": "poi",
+    "elementType": "geometry",
+    "stylers": [
+      { "visibility": "off" }
+    ]
+  },{
+    "featureType": "transit",
+    "stylers": [
+      { "visibility": "off" }
+    ]
+  }
+];	
+		
+var symbolOne = {
+  strokeColor: '#F00',
+  fillColor: '#F00',
+  fillOpacity: 1
+};
+
+var domain = [new google.maps.LatLng(11.2583, 75.1374)];
+var markers = [];
+
+var mapOptions = {
+  zoom:2,
+  center: myLatlng,	
+  mapTypeId: google.maps.MapTypeId.ROADMAP, 
+  opacity: 0.2,
+  disableDefaultUI: true,
+  draggable: false,
+  styles: styles
+};
+
+map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+
+var lineCoordinates = [
+  new google.maps.LatLng(53.215556, 56.949219),
+  new google.maps.LatLng(75.797201, 125.003906),
+  new google.maps.LatLng(37.7833, 144.9667),
+  new google.maps.LatLng(-24.797201, 26.003906),
+  new google.maps.LatLng(27.797201, -101.003906)
+];
+
+var lineSymbol = {
+	path: google.maps.SymbolPath.FORWARD_OPEN_ARROW                  
+};
+	
+for(i=0;i<lineCoordinates.length;i++){ 
+  markers.push(new google.maps.Marker({
+    position: lineCoordinates[i],
+    map: map,
+  }));
+  
+line = new google.maps.Polyline({
+  path: [lineCoordinates[i], domain[0]],
+  strokeOpacity: 0.8,
+  strokeWeight:2,
+  strokeColor: '#f00',
+  geodesic: true,
+  icons: [{
+    icon: lineSymbol,
+    offset: '100%',
+    repeat: '30px'
+  }]
+});
+ line.setMap(map);
+} //end of for loop
+//animate();
+
+} //end of initialize function
+
+function animate(){
+  var count = 0;
+  offsetId = window.setInterval(function(){
+    count = (count + 1) % 2000;
+    var icons = line.get('icons');
+    icons[0].offset = (count / 2) + '%';
+    line.set('icons', icons);
+  }, 200);
+}// end of animate function
+</script>
+</head>
+<body onLoad="initialize()">
+	<div id="map_canvas" style="width: 1000px; height: 675px; margin-left: 400px; margin-top: 38px;"></div>  
+</select>   
+</body>
+</html>

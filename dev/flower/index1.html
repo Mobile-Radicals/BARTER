@@ -1,0 +1,120 @@
+<html>
+	<head>
+	<style>
+html, body {
+  width:  100%;
+  height: 100%;
+  margin: 0px;
+  background-color:#f2f2f2;
+}
+
+</style>
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="d3.js"></script>
+	</head>
+	<body>
+    	<!--<img src="fields.svg" id="bg" alt="fields">-->
+        <div id="bg"></div>
+		<canvas id="mycanvas" />
+		
+		<script type="text/javascript">
+		
+			function drawPetal(x,y,angle,height, colour) {
+			  ctx.save();
+			  ctx.fillStyle = colour;
+			  ctx.translate(x,y);
+			  ctx.rotate(angle);
+			  ctx.beginPath();
+			  ctx.moveTo(0,0);
+			  ctx.bezierCurveTo(-height/2,-.7*height,-height/6,-height,0,-height);
+			  ctx.bezierCurveTo(height/6,-height,height/2,-.7*height,0,0);
+			  ctx.fill();
+			  ctx.restore();
+			}
+			
+			var canvas = document.getElementById("mycanvas");
+			var ctx = canvas.getContext("2d");
+			ctx.canvas.width = window.innerWidth;
+			ctx.canvas.height = window.innerHeight;
+			var centerX =  canvas.width/2;
+			var centerY =  canvas.height/2;
+			
+			/*ctx.beginPath();
+			ctx.rect(0, 0, canvas.width, canvas.height);
+			var grd = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+			grd.addColorStop(0, "#f2f2f2"); // light green
+			grd.addColorStop(1, "#00A747"); // dark green
+			ctx.fillStyle = "#f2f2f2";
+			ctx.fill();*/
+			
+			ctx.beginPath();
+			ctx.moveTo(this.centerX, this.centerY);
+			//ctx.bezierCurveTo(10, window.innerHeight,100, window.innerHeight, window.innerHeight/2, window.innerHeight);
+			ctx.lineTo(window.innerWidth/2,window.innerHeight/1.3);
+			ctx.lineWidth = 7;
+			// line color
+			ctx.strokeStyle = "#8dba00";
+			ctx.stroke();
+			ctx.closePath();
+	
+			var transPrices=[];
+			transPrices.push(60.50);
+			transPrices.push(40.00);
+			transPrices.push(123);
+			transPrices.push(90);
+			transPrices.push(100);
+			transPrices.push(145.50);
+			transPrices.push(150);
+			
+			var dataArray = [];
+			
+			var max = d3.max(transPrices);
+			var scale = d3.scale.linear().domain([0, max]).range([40, 100]);
+			for ( var i in transPrices ){
+				//console.log(scale(arr[i]));
+				dataArray.push(scale(transPrices[i]));
+			}
+
+			/*transPrices = transPrices.sort(function(a,b){
+				return a-b;
+			});*/
+
+			console.log(dataArray);
+
+			//get the total in the loop
+			var total = 0;
+			$.each(dataArray,function() {
+				total += this;
+			});
+			
+			console.log("total value: "+total);
+			
+			//get the smallest value inside the loop
+			var recycledValue = Math.min.apply(Math,transPrices);
+			console.log("recycled value: "+recycledValue);
+
+			for (var i = 0; i < dataArray.length; i++) {
+			  var _angle = 2*i*Math.PI/dataArray.length;
+			  var _colour = "#8dba00";
+			  drawPetal(centerX,centerY,_angle,dataArray[i],_colour);
+			}
+					
+			var pistilSize = 24;
+					
+			ctx.beginPath();
+			ctx.arc(centerX, centerY, pistilSize  , 0, 2 * Math.PI, false);
+			ctx.fillStyle = "#f2f2f2";
+			ctx.fill();
+			ctx.lineWidth = 10;
+			ctx.strokeStyle = "#f2f2f2";
+			ctx.stroke();
+			ctx.closePath();
+			
+			ctx.fillStyle = "#696969";
+			ctx.font=pistilSize+"px Verdana";
+			var txt="£"+Math.round(recycledValue);
+			ctx.fillText(txt,centerX - (ctx.measureText(txt).width/2), centerY + (pistilSize/2.5));		
+		</script>
+		
+	</body>
+</html>

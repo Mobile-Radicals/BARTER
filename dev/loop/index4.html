@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="description" content="[Animated BFS]" />
+<style>
+html, body { 
+  font: 14px helvetica neue, helvetica, arial, sans-serif;
+  padding:0; margin:0;
+  height:100%;
+}
+
+#cy {
+  height: 100%;
+  width: 80%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  float:left;
+  padding:0; margin:0;
+}
+
+#cy h1{
+	position:fixed;
+	padding: 10px;
+	color: #8dba00;
+}
+
+#notification{
+	 width: 20%;
+	 height: 100%;
+	 background-color: #8dba00;
+	 float:right;
+	 top: 0;
+	 right: 0;
+	 padding:0; margin:0;
+}
+
+#notification h2{
+	padding: 10px;
+	color:#f2f2f2;
+}
+
+#notification p
+{
+	color:#FFFFFF;
+	padding: 0 0 0 10px;
+	font-size:18px;
+}
+
+#notification .content2{
+	font-size:16px;
+	font-style:italic;
+}
+</style>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<meta charset=utf-8 />
+<title>BARTER Loops</title>
+  <script src="cytoscape.js"></script>
+  <script src="js/d3.js"></script>
+</head>
+<body>
+	<script>
+   $(function(){ // on dom ready
+   
+   var tradersArray = ["a","b","c","d","e","f","g"];
+   var tradersArray1 = ["a","b","c","d","e","f","g"];
+   var traders = ["Bud, the Florist","Chip, the Carpenter","Bun, the Baker","Chop, the Butcher","Pint, the Milkman","Pots, the Painter","Pipe, the plumber"];   
+
+   var lower_bound = 3,
+	   upper_bound = 7;
+					
+	var noTrans = Math.round(Math.random()*(upper_bound - lower_bound) + lower_bound);
+	var shuffledTradersArray = shuffle(tradersArray);
+
+	if (noTrans < tradersArray.length){
+		var diff = tradersArray.length - noTrans;
+		shuffledTradersArray.splice(noTrans-1, diff);  // remove one element, beginning at position 0 of the array
+	}
+	var transactions = [];
+	
+	edgeObj = [];
+	for (var x=0;x<tradersArray.length;x++){
+		//console.log(x+" - "+noTrans);
+		if (x < noTrans){
+			root = {};
+			subitem = {};
+			subitem["id"] = "e"+x+1; 
+			subitem["weight"] = 1; 
+			//the last element in the array
+			if (x == noTrans-1){
+				subitem["source"] = shuffledTradersArray[x];
+				subitem["target"] = shuffledTradersArray[0];
+			}else{
+				subitem["source"] = shuffledTradersArray[x];
+				subitem["target"] = shuffledTradersArray[x+1];
+			}
+			subitem["amount"] = Math.round(Math.random()*(10 - 1) + 1);
+			transactions.push(subitem["amount"]);
+			root["data"] = subitem;
+			edgeObj.push(root);
+		}
+	}
+	
+	
+	
+	console.log("trans "+transactions);
+	console.log("trader "+shuffledTradersArray);
+	//console.log("all trader "+tradersArray1);
+
+	var recycledAmount = d3.min(transactions);
+	var loopGrossValue = 0;
+	$.each(transactions,function() {
+				loopGrossValue += this;
+	});
+	//console.log(recycledAmount+"-"+loopGrossValue);
+	
+	$('.content').text('Recycled Value: '+recycledAmount);
+	$('.content1').text('Loop Gross Amount: '+loopGrossValue);
+	
+	var activity = "";
+	for (var x=0;x<shuffledTradersArray.length;x++){
+		var num = x+1;
+		if (x == shuffledTradersArray.length-1){
+			activity += " "+num+". "+traders[tradersArray1.indexOf(shuffledTradersArray[x])]+" spends £"+transactions[x]+" back with "+traders[tradersArray1.indexOf(shuffledTradersArray[0])]+" finally connecting the loop <br /><br />";
+		}else{
+			activity += " "+num+". "+traders[tradersArray1.indexOf(shuffledTradersArray[x])]+" spends £"+transactions[x]+" with "+traders[tradersArray1.indexOf(shuffledTradersArray[x+1])]+"<br /><br />";
+		}
+	}
+
+	$('.content2').html(activity);
+	
+	nodeObj = [];
+	
+	var diff = 0;
+	
+	for (var y=0;y<traders.length;y++){
+
+		root1 = {};
+		subitem1 = {};
+		subitem1["id"] = tradersArray1[y];
+		subitem1["name"] = traders[y];
+		
+		if(isInArray(tradersArray1[y],shuffledTradersArray)){
+			//get the index of the current nodes 
+			var nodeIndex = shuffledTradersArray.indexOf(tradersArray1[y]);
+
+			if (nodeIndex == 0){
+				subitem1["recycledMoney"] =  10;
+				subitem1["newMoney"] = 0;
+				subitem1["otherMoney"] = 0;
+			}else{
+				//get the previous value in the loop
+				//if recycled money is greater than the new money 
+				if(transactions[nodeIndex-1] >= transactions[nodeIndex]){
+					diff = 10 - transactions[nodeIndex];
+					subitem1["recycledMoney"] = transactions[nodeIndex];
+					subitem1["newMoney"] = 0;
+					subitem1["otherMoney"] = diff;
+				}else{
+					diff = transactions[nodeIndex] - transactions[nodeIndex-1];
+					subitem1["recycledMoney"] = transactions[nodeIndex-1];
+					subitem1["newMoney"] = diff;
+					subitem1["otherMoney"] = 10 - (transactions[nodeIndex-1] + diff);
+				}
+			}	
+		}else{
+			subitem1["recycledMoney"] =  0;
+			subitem1["newMoney"] = 0;
+			subitem1["otherMoney"] = 0;
+		}
+		
+		root1["data"] = subitem1;
+		nodeObj.push(root1);
+	}
+	
+	function isInArray(value, array) {
+	  return array.indexOf(value) > -1;
+	}
+	
+    var elesJson =  {
+		nodes: nodeObj, 
+		edges: edgeObj
+	  };
+	 
+	console.log(elesJson);
+	
+	$('#cy').cytoscape({
+	  style: cytoscape.stylesheet()
+		.selector('node')
+		  .css({
+			'width': '80px',
+			'height': '80px',
+			'content': 'data(name)',
+			'pie-size': '85%',
+			'font-size': '16px',
+			'color':'#666666'
+		  })
+		.selector('edge')
+		  .css({
+			'width': 4,
+			'target-arrow-shape': 'triangle',
+			'opacity': 0.5
+			})
+		/*.selector(':selected'5
+		  .css({
+			'background-color': 'black',
+			'line-color': 'black',
+			'target-arrow-color': 'black',
+			'source-arrow-color': 'black'
+			'opacity': 1
+		  })*/
+		.selector('.faded')
+		  .css({
+			'opacity': 0.4,
+			'text-opacity': 0.7
+		  })
+		  .selector('.highlighted')
+		  .css({
+			'opacity': 1,
+			'text-opacity': 0.75,
+			'content': 'data(amount)',
+			'font-size' : '18px',
+			'background-color': '#888888',
+			'color': '#000000',
+			'line-color': '#8dba00',
+			'target-arrow-color': '#8dba00',
+			'transition-property': 'background-color, line-color, target-arrow-color',
+			'transition-duration': '0.5s',
+			'pie-1-background-color': '#8dba00',
+			'pie-1-background-size': 'mapData(recycledMoney, 0, 10, 0, 100)',
+			'pie-2-background-color': '#647c00',
+			'pie-2-background-size': 'mapData(newMoney, 0, 10, 0, 100)',
+			'pie-3-background-color': '#f2f2f2',
+			'pie-3-background-size': 'mapData(otherMoney, 0, 10, 0, 100)'
+		  }),
+	  
+	  elements: elesJson,
+	  
+	  layout: {
+	   name: 'circle',
+		directed: true,
+		roots: '#a',
+		padding: 10
+	  },
+	  
+	  ready: function(){
+			window.cy = this;
+			cy.panningEnabled( false );
+			cy.autolock(true);
+	
+			var allData = cy.elements(function(){
+			  return this.isNode();
+			}).jsons();
+			var j = 0;
+			
+			while (allData[j]) {
+				//console.log(j);
+				cy.$("#"+allData[j].data.id).addClass('faded');
+				j++;
+			}
+						
+			var data = cy.elements(function(){
+			  return this.isEdge();
+			}).jsons();
+			
+			//var data = cy.elements().jsons();
+			var i = 0;
+	
+			//console.log(data);
+	
+			var highlightNextEle = function(){
+				if(i<data.length){
+					var edgeID = "#"+data[i].data.id;
+					var nodeID = "#"+data[i].data.source;
+		
+					cy.$(nodeID).addClass('highlighted');
+					cy.$(edgeID).addClass('highlighted');
+					i++;
+					setTimeout(highlightNextEle, 1000);
+				}
+			};
+			highlightNextEle();
+
+    	  }
+		});
+	}); // on dom ready
+	
+	//+ Jonas Raoni Soares Silva
+	//@ http://jsfromhell.com/array/shuffle [v1.0]
+	function shuffle(o){ //v1.0
+		//console.log(o);
+		for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+		return o;
+	};
+
+    </script>
+  
+  <div id="cy">
+  	  <h1>BARTER<br />loop demonstrator (with gauge)</h1>
+  </div>
+  <div id="notification">
+  	<h2>Activity</h2>
+    <p class="content"></p>
+     <p class="content1"></p>
+      <p class="content2"></p>
+       <p>*<u>pie chart key</u>*<br />-<strong>GREEN (light)</strong> original money<br />-<strong>GREEN (dark)</strong> money added to transaction<br /></p>
+  </div>
+</body>
+</html

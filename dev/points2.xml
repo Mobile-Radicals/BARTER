@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<markers>
+	<marker name="trader a" lat="53.763984988886854" lng="-2.7119672438129783" icon="img/b_3.png" color="#8cba3e" connections="true">
+		<connection lat="53.765310435980915" lng="-2.7185011049732566"></connection>
+		<connection lat="53.76787876699737" lng="-2.7244770666584373"></connection>
+	</marker>
+	<marker name="trader b" lat="53.765310435980915" lng="-2.7185011049732566" icon="img/b_3.png" color="#8cba3e" connections="true">
+		<connection lat="53.763984988886854" lng="-2.7119672438129783"></connection>
+	</marker>
+	<marker name="trader c" lat="53.76787876699737" lng="-2.7244770666584373" icon="img/b_3.png" color="#8cba3e" connections="false">
+		<connection />
+	</marker>
+	<marker name="trader d" lat="53.760515797718725" lng="-2.699468149803579" icon="img/b_3.png" color="#8cba3e" connections="false">
+		<connection />
+	</marker>
+	
+<!--<marker name="trader a" lat="53.763984988886854" lng="-2.7119672438129783" icon="img/b_2.png" name1="trader b" lat1="53.765310435980915" lng1="-2.7185011049732566" icon1="img/b_1.png" color="#8cba3e"/>
+<marker name="trader a" lat="53.763984988886854" lng="-2.7119672438129783" icon="img/b_2.png"	name1="trader d" lat1="53.760515797718725" lng1="-2.699468149803579" icon1="img/b_1.png" color="#8cba3e" />
+<marker name="trader a" lat="53.763984988886854" lng="-2.7119672438129783" icon="img/b_2.png"	name1="trader c" lat1="53.76787876699737" lng1="-2.7244770666584373" icon1="img/b_3.png" color="#8cba3e" />
+
+
+<marker name="trader b" lat="53.765310435980915" lng="-2.7185011049732566" icon="img/b_1.png" name1="trader c" lat1="53.76787876699737" lng1="-2.7244770666584373" icon1="img/b_3.png" color="#8cba3e"/>
+<marker name="trader b" lat="53.765310435980915" lng="-2.7185011049732566" icon="img/b_1.png" name1="trader a" lat1="53.763984988886854" lng1="-2.7119672438129783" icon1="img/b_2.png" color="#8cba3e"/>
+<marker name="trader b" lat="53.765310435980915" lng="-2.7185011049732566" icon="img/b_1.png" name1="trader d" lat1="53.760515797718725" lng1="-2.699468149803579" icon1="img/b_4.png" color="#8cba3e" />
+
+<marker name="trader c" lat="53.76787876699737" lng="-2.7244770666584373" icon="img/b_3.png" name1="trader b" lat1="53.765310435980915" lng1="-2.7185011049732566" icon1="img/b_1.png" color="#8cba3e" />-->
+
+
+<!--<marker name="trader b" lat="53.765310435980915" lng="-2.7185011049732566"/>
+<marker name="trader c" lat="53.76787876699737" lng="-2.7244770666584373"/>
+
+<marker name="trader b" lat="53.765310435980915" lng="-2.7185011049732566"/>
+<marker name="trader e" lat=" 53.760515797718725" lng="-2.699468149803579"/>-->
+
+
+</markers>
+
