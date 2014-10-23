@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Pie Chart</title>
+		<script src="js/chartjs/Chart.js"></script>
+        <meta name="viewport" content="width=device-width, user-scalable=no">
+        <style>
+		html, body{ padding:0; margin:0;}
+		#canvas-holder, #chart-area { width:90%; height:100%; padding:0 0 0 20px; margin:0; overflow:hidden; }
+		::-webkit-scrollbar { 
+			display: none; 
+		}
+	
+		</style>
+	</head>
+	<body>
+		<div id="canvas-holder">
+			<canvas id="chart-area"/>
+		</div>
+        <section>
+        <h1>bla bla</h1>
+        <h1>bla bla</h1>
+        <h1>bla bla</h1>
+        <h1>bla bla</h1>
+        <h1>bla bla</h1>
+        
+        </section>
+
+	<script>
+			
+		var pieData = [
+				{
+					value: 300,
+					color:"#5FBA00",
+					highlight: "#8DBA00",
+					label: "trader 1"
+				},
+				{
+					value: 50,
+					color: "#617F00",
+					highlight: "#8DBA00",
+					label: "trader 2"
+				},
+				{
+					value: 100,
+					color: "#C1FF00",
+					highlight: "#8DBA00",
+					label: "trader 3"
+				},
+				{
+					value: 40,
+					color: "#304000",
+					highlight: "#8DBA00",
+					label: "trader 4"
+				},
+				{
+					value: 120,
+					color: "#AEE500",
+					highlight: "#8DBA00",
+					label: "trader 5"
+				}
+			];
+
+			
+			window.onload = function(){
+			
+				
+							
+				canvas = document.getElementById("chart-area");
+				var ctx = document.getElementById("chart-area").getContext("2d");
+				canvas.width = window.innerWidth - 80;
+				canvas.height = window.innerHeight - 100;
+				
+				window.myPie = new Chart(ctx).Pie(pieData,{
+					// Number - Scale label font size in pixels
+					scaleFontSize: 20,
+					//Boolean - Whether we animate the rotation of the Doughnut
+					animateRotate : false,
+					//Boolean - Whether we animate scaling the Doughnut from the centre
+					animateScale : false
+				});
+			};
+
+	</script>
+	</body>
+</html>
