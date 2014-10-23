@@ -5,9 +5,9 @@ The BARTER project suit consists of 2 mobile user interfaces (android_terminal a
 
 Although some libraries were used within the project (this is noted within the code), the majority of the code, design and development for this project was developed by the following people 
 
-Mark Lochrie
-Adrian Gradinar 
-Jonny Huck 
+<a href="http://www.marklochrie.com" target="_blank">Mark Lochrie</a>
+<a href="http://www.research.lancs.ac.uk/portal/en/people/adrian-gradinar(f0dd140d-16ae-4ec5-8250-c4341893c5c2).html" target="_blank">"Adrian Gradinar</a>
+<a href="http://www.research.lancs.ac.uk/portal/en/people/jonny-huck(14f8d28d-33f1-403c-a5a7-086c2de609c0).html" target="_blank">Jonny Huck </a>
 
 Android Terminal:
 This is the application which the traders use on their NFC enabled Android device. The application has been designed and tested to work on KitKat, but there is no reason why it should not work on Lollipop (maybe just a recompile). The application was developed under Android Studio, so this IDE is advised for simplicity.
