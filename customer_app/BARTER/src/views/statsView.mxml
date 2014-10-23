@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009" addedToStage="view1_addedToStageHandler(event)"
+		 xmlns:s="library://ns.adobe.com/flex/spark" creationComplete="view1_creationCompleteHandler(event)" 
+		xmlns:local="*">
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.core.FlexGlobals;
+			import mx.events.FlexEvent;
+			
+			private var abHeight:Number = 0;
+			[Bindable]
+			private var swvPos:Number = 0;
+			
+			protected function view1_creationCompleteHandler(event:FlexEvent):void
+			{
+				trace(navigator.actionBar.height);
+			}
+			
+			protected function stageWebView_locationChangingHandler(event:LocationChangeEvent):void
+			{
+				trace("location changing " + event.location);
+			}
+			
+			protected function stageWebView_locationChangeHandler(event:LocationChangeEvent):void
+			{
+				trace("location change " + event.location);
+			}
+			
+			protected function view1_addedToStageHandler(event:Event):void
+			{
+				switch(FlexGlobals.topLevelApplication.runtimeDPI){
+					case 160:
+						swvPos = config.actionBarHeight;
+						break;
+					case 240:
+						swvPos = config.actionBarHeight * 1.5;
+						break;
+					case 320:
+						swvPos = config.actionBarHeight * 2;
+						break;
+					case 480:
+						swvPos = config.actionBarHeight * 3;
+						break;
+				}
+			}
+			
+			protected function back_clickHandler(event:MouseEvent):void
+			{
+				stageWebView.hide();
+				navigator.popView();
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<s:navigationContent>
+		<s:Group>
+			<s:Image id="back" source="assets/app/back.png" height="40" width="40" left="0" smooth="true" smoothingQuality="default" click="back_clickHandler(event)" />
+			<s:Image source="assets/app/traders.png" height="40" width="40" left="25" smooth="true" smoothingQuality="default" click="back_clickHandler(event)"/> 
+		</s:Group>
+	</s:navigationContent>
+	
+	<s:titleContent>
+		
+	</s:titleContent>
+	
+	<s:actionContent>
+		<!--<s:Image source="assets/app/traders.png" height="40" width="40" left="5" smooth="true" smoothingQuality="default" click="image1_clickHandler(event)" />-->
+	</s:actionContent>
+	
+	<s:Group height="100%" width="100%">
+		<mobile:StageWebViewUIComponent xmlns:mobile="com.*" id="stageWebView" url="http://barterproject.org/dev/loop/mobile_loops.html" yPos="{swvPos}"
+										locationChanging="stageWebView_locationChangingHandler(event)"
+										locationChange="stageWebView_locationChangeHandler(event)"/>
+		<!--<s:Rect width="100%" height="100%">
+		<s:fill>
+		<s:SolidColor color="0x85BD40" alpha="1" />
+		</s:fill>
+		</s:Rect>-->
+		
+	</s:Group>
+	
+
+</s:View>

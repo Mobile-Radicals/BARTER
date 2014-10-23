@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:local="*"
+		xmlns:s="library://ns.adobe.com/flex/spark" title="" creationComplete="view1_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			import org.qrcode.QRCode;
+			
+			//import utils.Utils;
+			[Bindable]private var cardID:String = "";
+			[Bindable]private var fontSize:int = 12;
+			private var customerData:SharedObject = SharedObject.getLocal("customerProfileData");
+			private var qr:org.qrcode.QRCode = new org.qrcode.QRCode();
+			
+			protected function view1_creationCompleteHandler(event:FlexEvent):void
+			{
+				
+				cardID = customerData.data.cardID;
+				var name:String = customerData.data.name.replace(' ','\n');
+				customerName.text = name;
+				customerID.text = cardID;
+				qr.encode(cardID);
+				var img:Bitmap = new Bitmap(qr.bitmapData);
+				QRCode.source = img;
+			
+				
+				/*var t:TextField = new TextField();
+				t.width = config.appHeight;
+				t.text = cardID;
+				
+				//You set this according to your TextField's dimensions
+				var maxTextWidth:int = config.appHeight - Utils.getActionBarPos(); 
+				//trace(maxTextWidth);
+				var f:TextFormat = t.getTextFormat();
+				f.size = 100;
+				t.setTextFormat(f);
+				f.font = "qrFont";
+				
+				//decrease font size until the text fits  
+				while (t.textWidth > maxTextWidth) {
+					f.size = int(f.size) - 1;
+					t.setTextFormat(f);
+				
+				}
+				fontSize = int(f.size) * 2;*/
+				
+			}
+			
+			protected function back_clickHandler(event:MouseEvent):void
+			{
+				navigator.popView();
+			}
+		]]>
+	</fx:Script>
+
+	<s:navigationContent>
+		<s:Group>
+			<s:Image id="back" source="assets/app/back.png" height="40" width="40" left="0" smooth="true" smoothingQuality="default" click="back_clickHandler(event)" />
+			<s:Image source="assets/app/app_icon.png" height="40" width="40" left="20" smooth="true" smoothingQuality="default" click="back_clickHandler(event)"/>
+		</s:Group>
+	</s:navigationContent>
+	
+	
+	<s:Group height="100%" width="100%" top="0">
+		<s:Group width="{config.appHeight}" height="{config.appWidth}" id="container" visible="true" top="10" rotation="90" x="{config.appWidth}" bottom="10">
+			<s:Rect id="card" width="100%" height="100%" radiusX="10" radiusY="10" left="20" right="20" top="10" bottom="10">
+				<s:fill>
+					<s:SolidColor color="0x85BD40" alpha="1" />
+				</s:fill>
+			</s:Rect>
+			
+			
+			<s:Label id="cardTitle" text="BARTER" color="0xFFFFFF" fontSize="50" horizontalCenter="1" top="30" />
+			
+			
+			<s:BitmapImage  id="QRCode" left="30" top="{cardTitle.y + cardTitle.height + 20}" />
+			
+			<s:Label id="customerName" text="" color="0xFFFFFF" fontSize="30" maxWidth="{card.width-60}"
+					 top="{cardTitle.y + cardTitle.height + 20}"
+					 left="{QRCode.width + QRCode.x + 10}"  />
+			
+			<s:Label id="customerID" text="" color="0xFFFFFF" fontSize="26" maxWidth="{card.width-60}"
+					 top="{customerName.y + customerName.height + 10}"
+					 left="{QRCode.width + QRCode.x + 10}"  />
+			
+			<!--<s:RichText width="100%" fontFamily="qrFont" fontSize="{fontSize}" height="{config.appHeight}" 
+						textAlign="center" id="barcode" color="0xFFFFFF" verticalCenter="1" verticalAlign="middle"   >
+				<s:text>{cardID}</s:text>
+			</s:RichText>-->
+					
+					
+				
+		</s:Group>	
+	</s:Group>
+	
+	
+</s:View>

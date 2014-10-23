@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009"
+		xmlns:s="library://ns.adobe.com/flex/spark"
+		xmlns:barter_customer="services.barter_customer.*"
+		creationComplete="view1_creationCompleteHandler(event)" title="">
+	
+
+	<fx:Script>
+		<![CDATA[
+			import mx.core.FlexGlobals;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			import pl.mateuszmackowiak.nativeANE.notifications.Toast;
+			private var customerData:SharedObject = SharedObject.getLocal("customerProfileData");
+			
+			protected function view1_creationCompleteHandler(event:FlexEvent):void
+			{
+				//trace(customerData.isPrototypeOf("loggedin"));
+				if(customerData.data.loggedin == true)
+					this.currentState = "loggedin";
+				else
+					this.currentState = "login";
+			}
+			
+			protected function submit_clickHandler(event:MouseEvent):void
+			{
+				loginResult.token = barter_customer.login(email.text, password.text);
+			}
+			
+			protected function loginResult_resultHandler(event:ResultEvent):void
+			{
+				if(event.result.message == true){
+					//authorised
+					this.currentState = "loggedin";
+					customerData.data.cardID = event.result.data.cardId;
+					customerData.data.name = event.result.data.name;
+					customerData.data.loggedin = true;	
+					customerData.flush();
+				}else{
+					//failed authentication
+					Toast.show("Login failed",Toast.LENGTH_SHORT);
+				}
+			}
+			
+			protected function loginResult_faultHandler(event:FaultEvent):void
+			{
+				Toast.show("Opps something went wrong",Toast.LENGTH_SHORT);
+			}
+			
+			protected function logout_clickHandler(event:MouseEvent):void
+			{
+				customerData.data.loggedin = false;
+				this.currentState = "login";
+			}
+			
+			protected function back_clickHandler(event:MouseEvent):void
+			{
+				navigator.popView();
+			}
+			
+			protected function cardViewBtn_clickHandler(event:MouseEvent):void
+			{
+				navigator.pushView(views.customerCardView, customerData.data.cardID);
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<s:states>
+		<s:State name="login" />
+		<s:State name="loggedin" />
+	</s:states>
+	
+	<fx:Declarations>
+		<s:CallResponder id="loginResult" result="loginResult_resultHandler(event)" fault="loginResult_faultHandler(event)"/>
+		<barter_customer:Barter_customer id="barter_customer"/>
+	</fx:Declarations>
+
+	
+	<s:navigationContent>
+		<s:Group>
+			<s:Image id="back" source="assets/app/back.png" height="40" width="40" left="0" smooth="true" smoothingQuality="default" click="back_clickHandler(event)" />
+			<s:Image source="assets/app/app_icon.png" height="40" width="40" left="20" smooth="true" smoothingQuality="default" click="back_clickHandler(event)"/>
+		</s:Group>
+	</s:navigationContent>
+	
+	<s:actionContent>
+		<s:Button id="logout" includeIn="loggedin" label="logout" height="40" click="logout_clickHandler(event)" />
+	</s:actionContent>
+	
+	<s:Group includeIn="login" height="100%" width="100%">
+		<s:Label id="info" text="Log into the app to view your BARTER barcode, transaction history and much more" width="100%" 
+				 left="10" right="10" fontSize="14" color="0xFFFFFF" top="10" />
+		<s:TextInput id="email" width="100%" height="80" top="{info.y + info.height + 10}" 
+					 left="10" right="10" color="0xFFFFFF" prompt="email address"/>
+		<s:TextInput id="password" width="100%" height="80" prompt="password" displayAsPassword="true" 
+					 top="{email.height + email.y + 5}" left="10" right="10" color="0xFFFFFF" />
+		<s:Button id="submit" width="100%" height="80" label="submit" click="submit_clickHandler(event)" 
+				  top="{password.height + password.y + 20}" left="10" right="10" color="0xFFFFFF"/>
+		
+	</s:Group>
+	
+	<s:Group includeIn="loggedin" height="100%" width="100%" top="10">
+		<s:Button id="cardViewBtn" click="cardViewBtn_clickHandler(event)" left="10" right="10"
+				  height="60" width="100%" label="My Card" skinClass="skins.barterButtonSkin" />
+	
+	</s:Group>
+	
+</s:View>

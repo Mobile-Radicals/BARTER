@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:local="*"
+		xmlns:s="library://ns.adobe.com/flex/spark" title="customerAccountView" creationComplete="view1_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import mx.core.FlexGlobals;
+			import mx.events.FlexEvent;
+			[Bindable]private var swvPos:Number = 0;
+			[Bindable]private var url:String = "";
+			
+			protected function view1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+			protected function stageWebView_locationChangingHandler(event:LocationChangeEvent):void
+			{
+				trace("location changing " + event.location);
+			}
+			
+			protected function stageWebView_locationChangeHandler(event:LocationChangeEvent):void
+			{
+				trace("location change " + event.location);
+			}
+			
+			protected function view1_addedToStageHandler(event:Event):void
+			{
+			}
+			
+			protected function logout_clickHandler(event:MouseEvent):void
+			{
+				stageWebView.hide();
+				this.currentState = "login";
+			}
+			
+			protected function back_clickHandler(event:MouseEvent):void
+			{
+				stageWebView.hide();
+				navigator.popView();
+			}
+			
+			
+		]]>
+	</fx:Script>
+	
+	
+	<mobile:StageWebViewUIComponent xmlns:mobile="com.*" id="stageWebView" url="{url}" yPos="{config.actionBarHeight}" 
+									locationChanging="stageWebView_locationChangingHandler(event)"
+									locationChange="stageWebView_locationChangeHandler(event)"/>
+	
+</s:View>

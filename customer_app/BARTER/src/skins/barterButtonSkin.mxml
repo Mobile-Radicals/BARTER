@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- http://blog.flexexamples.com/2009/08/18/setting-the-fill-colors-on-a-halo-button-control-in-flex-4/ -->
+<!-- http://blog.flexexamples.com/2009/08/29/creating-a-spark-button-control-with-a-vertical-label-in-flex-4/ -->
+<s:SparkSkin xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		xmlns:s="library://ns.adobe.com/flex/spark">
+	<!-- host component -->
+	<fx:Metadata>
+		[HostComponent("spark.components.Button")]
+	</fx:Metadata>
+	
+	<fx:Script>
+		<![CDATA[
+			/* Define the skin elements that should not be colorized. For button, the graphics are colorized but the label is not. */
+			static private const exclusions:Array = ["labelDisplay"];
+			
+			override public function get colorizeExclusions():Array {
+				return exclusions;
+			}
+		]]>
+	</fx:Script>
+	
+	<!-- states -->
+	<s:states>
+		<s:State name="up"/>
+		<s:State name="down"/>
+		<s:State name="over"/>
+		<s:State name="disabled"/>
+	</s:states>
+	
+	<!-- layer 1: normal state -->
+	<s:Rect left="1" right="1" top="1" bottom="1" radiusX="5" radiusY="5">
+		<s:fill>
+			<s:SolidColor color="0x85BD40" />
+		</s:fill>
+		<s:stroke>
+		<s:SolidColorStroke weight="1" caps="none" joints="miter" miterLimit="10" color="0xf2f2f2"  alpha="0.5" />
+		</s:stroke>
+	</s:Rect>
+	
+	<!-- layer 2: down state -->
+	<s:Rect left="1" right="1" top="1" bottom="1" radiusX="5" radiusY="5" includeIn="down">
+		<s:fill>
+			<s:SolidColor color="0x85BD40" alpha="0.75"/>
+		</s:fill>
+		<s:stroke>
+			<s:SolidColorStroke weight="1" caps="none" joints="miter" miterLimit="10" color="0xf2f2f2" alpha="0.5" />
+		</s:stroke>
+		<s:filters>
+			<s:DropShadowFilter distance="1" angle="90" blurX="6" blurY="6" alpha="0.75"/>
+		</s:filters>
+	</s:Rect>
+	
+	<!-- layer 3: disabled state -->
+	<s:Rect left="1" right="1" top="1" bottom="1" radiusX="5" radiusY="5" includeIn="disabled">
+		<s:fill>
+			<s:SolidColor color="0xc2c2c2" alpha="0.7" />
+		</s:fill>
+		<s:stroke>
+			<s:SolidColorStroke weight="1" caps="none" joints="miter" miterLimit="10" color="#c3c3c3"/>
+		</s:stroke>
+	</s:Rect>
+	
+	<!-- layer 3: border - put on top of the fill so it doesn't disappear when scale is less than 1 -->
+	<!--<s:Rect left="0" right="0" top="0" bottom="0" width="69" height="20" radiusX="5" radiusY="5">
+		<s:stroke>
+			<s:LinearGradientStroke rotation="90" weight="1">
+				<s:GradientEntry color="0x000000" alpha="0.5625" alpha.down="0.6375" />
+				<s:GradientEntry color="0x000000" alpha="0.75" alpha.down="0.85" />
+			</s:LinearGradientStroke>
+		</s:stroke>
+	</s:Rect>-->
+	
+	<!-- layer 4: text -->
+	<s:Label id="labelDisplay" textAlign="center" verticalAlign="middle" horizontalCenter="0" verticalCenter="1" 
+			 color="0xffffff" color.down="0xffffff" fontWeight="bold"/>
+</s:SparkSkin>

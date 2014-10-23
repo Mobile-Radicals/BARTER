@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer 
+	xmlns:fx="http://ns.adobe.com/mxml/2009" 
+	xmlns:s="library://ns.adobe.com/flex/spark"
+	width="100%">
+	<fx:Script>
+		<![CDATA[
+			import spark.components.List;
+			
+			[Bindable]public var tname:String;
+			[Bindable]public var tagline:String;
+			[Bindable]public var phone:String;
+			[Bindable]public var color:uint;
+			[Bindable]public var card_offset:int;
+			[Bindable]public var photo:String;
+			[Bindable]public var trader_type:String;
+			[Bindable]public var offer:String;
+			
+			override public function set data(value:Object):void {
+				super.data = value; 
+				tname = value.tname;
+				photo = value.photo;
+				tagline = value.tagline;
+				card_offset = value.card_offset;
+				color = value.color;
+				trader_type = value.trader_type;
+				offer = value.offer;
+			}
+			
+			protected function card_clickHandler(event:MouseEvent):void
+			{
+				var parentList:List = owner as List;
+				//trace(parentList.dataProvider.getItemIndex(data));
+				var itemObj:Object = new Object();
+				itemObj.problem = parentList.dataProvider.getItemAt(parentList.dataProvider.getItemIndex(data));
+				
+				var categoryEvent:CustomEvent = new CustomEvent(CustomEvent.UPDATE, itemObj);
+				dispatchEvent(categoryEvent);
+				owner.dispatchEvent(categoryEvent);
+				//parentList.dispatchEvent(categoryEvent);
+				parentApplication.dispatchEvent(categoryEvent);
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<s:states>
+		<s:State name="normal"/>          
+		<s:State name="selected"/>
+	</s:states>
+	
+	<s:Rect top="{card_offset}" left="0" right="0" bottom="0" topRightRadiusX="20" topRightRadiusY="20">
+		<s:fill>
+			<s:SolidColor id="bg" color="{color}" />
+		</s:fill>
+	</s:Rect>
+	
+	<s:Group top="{card_offset}" left="0" right="0" bottom="0" width="100%" height="100" includeIn="normal" >
+		
+		<s:Image id="icon" source="{trader_type}"
+				 width="40" height="40" left="10" top="15" />
+		
+		<s:Label id="labelDisplay"
+				 text="{tname}"
+				 left="{icon.width + icon.x + 5}" top="20"
+				 fontSize="20"
+				 textAlign="start"
+				 fontWeight="bold"
+				 color="0xffffff"
+				 verticalAlign="middle"
+				 maxDisplayedLines="1"/>
+	</s:Group>
+	
+	<s:Group id="container" includeIn="selected" top="10" left="00" right="0" height="240"  click="card_clickHandler(event)">
+		
+		<s:Label id="labelDisplay1"
+				 text="{tname}"
+				 left="10" top="0"
+				 fontSize="20"
+				 textAlign="start"
+				 fontWeight="bold"
+				 color="0xffffff"
+				 verticalAlign="middle"
+				 maxDisplayedLines="1"/>
+		
+		<s:Label id="taglineDisplay" text="{tagline}" fontSize="14" color="0xffffff" maxWidth="{container.width - 10}"
+				 left="10" top="{labelDisplay1.height + labelDisplay1.y + 5}"/>
+		
+		<s:Image id="banner" source="{photo}" scaleMode="zoom"
+				 width="100%" height="100" left="0" right="0" top="{taglineDisplay.height + taglineDisplay.y + 20}" />
+		
+		<!--<s:Label text="Phone: {phone}" />-->
+		<!--<s:Button label="click me" height="100" width="200" click="button1_clickHandler(event)" top="{banner.height + banner.y + 10}" />-->
+		<s:Image id="decorator" source="assets/app/decorator.png" click="card_clickHandler(event)"
+				 width="40" height="40" top="0" right="5" />
+		
+		<s:Label id="labelDisplay2"
+				 text="{offer}"
+				 left="10" top="{banner.height + banner.y + 10}"
+				 fontSize="16"
+				 maxWidth="{banner.width}"
+				 textAlign="start"
+				 color="0xffffff"/>
+	</s:Group>
+	
+</s:ItemRenderer>

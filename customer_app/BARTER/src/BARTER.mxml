@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ViewNavigatorApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
+							xmlns:s="library://ns.adobe.com/flex/spark" firstView="views.tradersView" 
+							applicationDPI="160" 
+							applicationComplete="appCompleteHandler(event);"
+							creationComplete="viewnavigatorapplication1_creationCompleteHandler(event)">
+	
+	<fx:Style source="style.css"/>
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			import spark.components.ActionBar;
+			private var ab:ActionBar;
+			protected function viewnavigatorapplication1_creationCompleteHandler(event:FlexEvent):void
+			{
+				ab = navigator.actionBar;
+				ab.height = config.actionBarHeight;
+			}
+			
+			
+			protected function appCompleteHandler(event:FlexEvent):void {
+				stage.addEventListener("keyDown", handleButtons, false,1);
+				//stage.addEventListener("keyUp", handleButtons, false, 1);
+			} 	
+			
+			protected function handleButtons(event:KeyboardEvent):void
+			{
+				if (event.keyCode == Keyboard.HOME) {
+					// Handle Home button.
+				}
+				else if (event.keyCode == Keyboard.BACK) {
+					//trace("view : "+navigator.activeView.className.toLowerCase());
+					event.preventDefault();
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	
+</s:ViewNavigatorApplication>

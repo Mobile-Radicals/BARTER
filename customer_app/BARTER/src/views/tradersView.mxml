@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009"  xmlns:local="com.accordion.*" chromeColor="0x444444"
+		xmlns:s="library://ns.adobe.com/flex/spark" title="tradersView" creationComplete="view1_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import mx.core.FlexGlobals;
+			import mx.events.FlexEvent;
+			
+			protected function view1_creationCompleteHandler(event:FlexEvent):void
+			{
+				trader_cards.dataProvider = config.traders;
+				trader_cards.addEventListener(CustomEvent.UPDATE, parseItemsData);
+				
+				
+				trace("App DPI:" + FlexGlobals.topLevelApplication.runtimeDPI);
+				
+			}
+			
+			private function parseItemsData(event:CustomEvent):void
+			{
+				trace(config.traders[trader_cards.selectedIndex].id);
+				navigator.pushView(views.traderCardView,config.traders[trader_cards.selectedIndex]);
+			}
+			
+			protected function image1_clickHandler(event:MouseEvent):void
+			{
+				navigator.pushView(views.statsView);
+			}
+			
+			protected function image2_clickHandler(event:MouseEvent):void
+			{
+				navigator.pushView(views.customerView);
+			}
+			
+		]]>
+	</fx:Script>
+	
+		<s:navigationContent>
+			<s:Image source="assets/app/app_icon.png" height="40" width="40" left="5" smooth="true" smoothingQuality="default" />
+		</s:navigationContent>
+		
+	<s:titleContent>
+		<s:Label id="titleDisplay" text="BARTER"  />
+	</s:titleContent>
+		
+	<s:actionContent>
+		<s:Image source="assets/app/stats.png" height="40" width="40" left="0" smooth="true" smoothingQuality="default" click="image1_clickHandler(event)" />
+		<s:Spacer width="10" />
+		<s:Image source="assets/app/id.png" height="40" width="40" left="5" smooth="true" smoothingQuality="default" click="image2_clickHandler(event)" />
+	</s:actionContent>
+	
+	<s:Group width="100%" height="100%" top="0">
+		<s:Rect width="100%" height="100%">
+			<s:fill>
+				<s:SolidColor color="0x444444" />
+			</s:fill>
+		</s:Rect>
+		
+		<s:List id="trader_cards" itemRenderer="com.accordion.ItemRendererList" allowMultipleSelection="false" 
+				top="0" left="0" right="0" bottom="0" labelField="name" borderVisible="false" chromeColor="0x444444" >
+			<s:layout>
+				<s:VerticalLayout gap="0" />
+			</s:layout>
+		</s:List>
+	</s:Group>
+</s:View>

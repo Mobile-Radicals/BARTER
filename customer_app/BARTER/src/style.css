@@ -1,0 +1,69 @@
+/* CSS file */
+@namespace s "library://ns.adobe.com/flex/spark";
+
+s|View{
+	backgroundColor:#444444;
+}
+
+s|List s|HScrollBar
+{
+	skinClass: ClassReference("spark.skins.mobile.supportClasses.MobileSkin");
+}
+
+s|Scroller s|VScrollBar
+{
+	skinClass: ClassReference("spark.skins.mobile.supportClasses.MobileSkin");
+}
+
+s|ActionBar {
+	skinClass: ClassReference("skins.SkinningActionBar");
+	defaultButtonAppearance: beveled;
+}
+
+@font-face {
+	src:url("assets/fonts/CODE39HRNA_1.ttf");
+	fontFamily: barcodeFont;
+	embedAsCFF: true;
+}
+
+
+@media (application-dpi: 160)
+{
+}
+
+@media (application-dpi: 240)
+{
+}
+
+@media (application-dpi: 320)
+{
+	#titleDisplay
+	{
+		fontSize: 20;
+		color: #FFFFFF;
+	}
+	
+	#tagline{
+		fontSize: 16;
+		color:#FFFFFF;
+	}
+}
+
+@media (application-dpi: 480)
+{
+	#titleDisplay
+	{
+		fontSize: 26;
+		color: #FFFFFF;
+	}
+	
+	#tagline{
+		fontSize: 22;
+		color:#FFFFFF;
+	}
+}
+
+.viewTitle{
+	fontSize: 18;
+	color:#f2f2f2;
+}

@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009" actionBarVisible="false" initialize="view1_initializeHandler(event)" 
+		xmlns:s="library://ns.adobe.com/flex/spark" title="" creationComplete="view1_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import flash.net.navigateToURL;
+			
+			import mx.events.FlexEvent;
+			import mx.events.PropertyChangeEvent;
+			
+			import spark.components.ActionBar;
+			
+			import pl.mateuszmackowiak.nativeANE.notifications.Toast;
+			
+			import skins.CustomSkinningActionBar;
+			
+			import utils.Utils;
+			private var ab:ActionBar;
+			[Bindable]
+			private var traderColor:uint;
+			private var mapUrl:String;
+			private var customerData:SharedObject = SharedObject.getLocal("customerProfileData");
+			
+			protected function view1_initializeHandler(event:FlexEvent):void
+			{
+				ab = navigator.actionBar;
+				ab.setStyle("skinClass",skins.CustomSkinningActionBar);
+			}
+			
+			protected function view1_creationCompleteHandler(event:FlexEvent):void
+			{
+				if(customerData.data.loggedin != true)
+					wrapper.removeElement(card);
+	
+				trace("trader_id"+data.id);
+				trace("color"+data.color);
+				config.actionBarColor = data.color;
+				traderColor = data.color;
+				
+				banner.source = data.photo;
+				trader_icon.source = data.trader_type;
+				titleDisplay.text = data.tname;
+				tagline.text = data.tagline;
+				offer_detail.text = data.offer;
+				var mapY:int = config.appHeight / 4;
+				mapUrl = "http://maps.googleapis.com/maps/api/staticmap?markers=color:red%7Clabel:@%7C"+data.lat+","+data.lon+"&zoom=14&size="+config.appWidth+"x"+mapY+"&sensor=false";
+				trace(mapUrl);
+				map.source = mapUrl;
+				
+				if (data.facebook == ""){
+					contactGroup.removeElement(fb);
+				}
+				if (data.twitter == ""){
+					contactGroup.removeElement(tw);
+				}
+				if (data.phone == ""){
+					contactGroup.removeElement(t);
+				}
+				if (data.email == ""){
+					contactGroup.removeElement(e);
+				}
+				if (data.url == ""){
+					contactGroup.removeElement(u);
+				}
+				
+				if(data.offer == ""){
+					badgeGroup.removeElement(offer_badge);
+					//offer_detail.text="contact me for a competitive quote";
+					offer_detail.height = 0;
+					offer_detail.setStyle("backgroundColor",0xFFFFFFFF);
+				}
+				if(data.has_respend == "no"){
+					badgeGroup.removeElement(respent_badge);
+				}
+				trace(data.level);
+				switch(data.level){
+					case '1':
+						level_badge.source = "assets/app/lv1.png";
+						break;
+					case '2':
+						level_badge.source = "assets/app/lv2.png";
+						break;
+					case '3':
+						level_badge.source = "assets/app/lv3.png";
+						break;
+					case '4':
+						level_badge.source = "assets/app/lv4.png";
+						break;
+					case '5':
+						level_badge.source = "assets/app/lv5.png";
+						break;
+					case '6':
+						level_badge.source = "assets/app/lv6.png";
+						break;
+					case '7':
+						level_badge.source = "assets/app/lv7.png";
+						break;
+				}
+				
+				//container.addEventListener(MouseEvent.MOUSE_DOWN, scrollList);
+				//container.addEventListener(MouseEvent.MOUSE_MOVE, scrollList);
+				//container.addEventListener(MouseEvent.MOUSE_UP, stopScrollList);
+				container.viewport.addEventListener(PropertyChangeEvent.PROPERTY_CHANGE, scrollingList);
+				//make the viewport refresh to show the actionbar
+				container.viewport.verticalScrollPosition = -1;
+			}
+			
+			private function scrollingList( event:PropertyChangeEvent ):void
+			{
+				if (container.viewport.verticalScrollPosition > 0){
+					trace("scrolling down the view");
+					ab.alpha = 0.5;
+					panelOut.play();
+					//container.y = 0;
+				}else{
+					trace("back to the top of the scroll");
+					ab.visible = true;
+					ab.alpha = 1;
+					panelIn.play();
+					//container.top = config.actionBarHeight;
+				}
+			}
+			
+			protected function back_clickHandler(event:MouseEvent):void
+			{
+				//stop the view from scrolling and reset the actionbar to its original state
+				container.viewport.verticalScrollPosition = -1;
+				ab.alpha = 1;
+				Utils.resetActionBarColor();
+				navigator.popView();
+			}
+			
+			protected function map_clickHandler(event:MouseEvent):void
+			{
+				navigateToURL(new URLRequest('http://maps.google.co.uk/maps?q='+data.lat+','+data.lon));
+			}
+			protected function fb_clickHandler(event:MouseEvent):void
+			{
+				navigateToURL(new URLRequest(data.facebook));
+			}
+			
+			protected function tw_clickHandler(event:MouseEvent):void
+			{
+				navigateToURL(new URLRequest(data.twitter));
+			}
+			
+			protected function t_clickHandler(event:MouseEvent):void
+			{
+				navigateToURL(new URLRequest("tel:" + data.phone));				
+			}
+			
+			protected function e_clickHandler(event:MouseEvent):void
+			{
+				navigateToURL(new URLRequest("mailto:"+ data.email));
+			}
+			
+			protected function u_clickHandler(event:MouseEvent):void
+			{
+				navigateToURL(new URLRequest(data.url));
+			}
+			
+			protected function badge_clickHandler(event:MouseEvent):void
+			{
+				//trace(event.currentTarget.id);
+				switch(event.currentTarget.id){
+					case 'offer_badge':
+						Toast.show(data.offer,Toast.LENGTH_SHORT);
+						break;
+					case 'level_badge':
+						Toast.show(data.tname+" current level is "+data.level,Toast.LENGTH_SHORT);
+						break;
+					case 'respent_badge':
+						Toast.show(data.tname+" spends locally with BARTER",Toast.LENGTH_SHORT);
+						break;
+				}
+			}
+			
+			protected function image2_clickHandler(event:MouseEvent):void
+			{
+				//stop the view from scrolling and reset the actionbar to its original state
+				container.viewport.verticalScrollPosition = -1;
+				ab.alpha = 1;
+				Utils.resetActionBarColor();
+				navigator.pushView(views.customerView);
+			}
+			
+			protected function card_clickHandler(event:MouseEvent):void
+			{
+				//stop the view from scrolling and reset the actionbar to its original state
+				container.viewport.verticalScrollPosition = -1;
+				ab.alpha = 1;
+				Utils.resetActionBarColor();
+				navigator.pushView(views.customerCardView);
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<s:Sine id="sineEasing"
+				easeInFraction="0.1"/>
+		<!--<s:Power id="powerEasing"
+				 exponent="10"/>-->
+		
+		<s:Move id="panelIn" target="{container}" yTo="70"
+				duration="400" easer="{sineEasing}"/>        
+		<s:Move id="panelOut" target="{container}" yTo="0"
+				duration="400" easer="{sineEasing}"/>  
+		
+	</fx:Declarations>
+
+	<s:navigationContent>
+		<s:Group>
+			<s:Image id="back" source="assets/app/back.png" height="40" width="40" left="0" smooth="true" smoothingQuality="default" click="back_clickHandler(event)" />
+			<s:Image id="trader_icon" height="40" width="40" smooth="true" left="25" smoothingQuality="default" click="back_clickHandler(event)"/>
+		</s:Group>
+	</s:navigationContent>
+	
+	<s:titleContent>
+		<s:Label id="titleDisplay" color="0xFFFFFF"  />
+	</s:titleContent>
+	
+	<s:actionContent>
+		<!--<s:Image source="assets/app/id.png" height="40" width="40" left="5" smooth="true" smoothingQuality="default" click="image2_clickHandler(event)" />-->
+	</s:actionContent>
+	
+	<s:Scroller id="container" width="100%" height="100%" y="{config.actionBarHeight}">
+		<s:VGroup id="wrapper" width="100%" height="100%" top="0">
+			<!--<s:Rect width="100%" height="100%">
+				<s:fill>
+					<s:SolidColor color="0x85BD40" alpha="0.2" />
+				</s:fill>
+			</s:Rect>-->
+			<s:Image id="banner" width="100%" height="120" scaleMode="zoom" top="0" />
+			<s:Label id="tagline" left="5" color="0xFFFFFF" maxWidth="{banner.width - 5}" 
+					 backgroundColor="{traderColor}" backgroundAlpha="0.7" paddingTop="5" paddingBottom="5" paddingLeft="5" paddingRight="5" />
+			
+			<s:HGroup id="badgeGroup" horizontalAlign="center" horizontalCenter="1" width="100%" 
+					  paddingTop="5" paddingBottom="5" maxWidth="{banner.width}">
+				<s:Image id="offer_badge" source="@Embed('assets/app/has_offer.png')" width="{config.appWidth/5}" height="{config.appWidth/5}" click="badge_clickHandler(event)" />
+				<s:Image id="level_badge" source="@Embed('assets/app/lv1.png')"  width="{config.appWidth/5}" height="{config.appWidth/5}" click="badge_clickHandler(event)"  />
+				<s:Image id="respent_badge" source="@Embed('assets/app/has_respent.png')" width="{config.appWidth/5}"  height="{config.appWidth/5}" click="badge_clickHandler(event)" />
+			</s:HGroup>
+			
+			<s:Label id="offer_detail" backgroundColor="0xEDA900" 
+					 styleName="viewTitle" left="5" right="5" maxWidth="{banner.width}" paddingTop="5" paddingBottom="5" paddingLeft="5" paddingRight="5"/>
+					 
+			<s:Label id="contact_title" text="Get in touch:" styleName="viewTitle" left="5" maxWidth="{banner.width}"/>
+			
+			<s:HGroup id="contactGroup" horizontalAlign="center" horizontalCenter="1" paddingTop="5" paddingBottom="5" 
+					  top="{contact_title.y + contact_title.height + 5}" maxWidth="{banner.width}" width="100%">
+				<s:Image id="fb" source="@Embed('assets/app/facebook.png')" width="{config.appWidth/6}" height="{config.appWidth/6}" click="fb_clickHandler(event)" />
+				<s:Image id="tw" source="@Embed('assets/app/twitter.png')"  width="{config.appWidth/6}" height="{config.appWidth/6}" click="tw_clickHandler(event)"  />
+				<s:Image id="t" source="@Embed('assets/app/call.png')" width="{config.appWidth/6}"  height="{config.appWidth/6}" click="t_clickHandler(event)" />
+				<s:Image id="e" source="@Embed('assets/app/email.png')"  width="{config.appWidth/6}"  height="{config.appWidth/6}" click="e_clickHandler(event)" />
+				<s:Image id="u" source="@Embed('assets/app/www.png')"  width="{config.appWidth/6}" height="{config.appWidth/6}" click="u_clickHandler(event)"  />
+			</s:HGroup>
+			
+			<s:Label id="map_title" text="Drop by:" styleName="viewTitle" left="5" maxWidth="{banner.width}"/>
+			
+			<s:Image id="map" source="@Embed('assets/app/placeholder.png')" smooth="true" smoothingQuality="high"  width="100%" maxWidth="{banner.width}" 
+					 left="0" right="0" scaleMode="stretch" click="map_clickHandler(event)" />
+			
+			<s:Button id="card" label="My Card" width="100%" height="80" left="5" right="5" skinClass="skins.barterButtonSkin" click="card_clickHandler(event)" />
+			
+			<s:Spacer height="200" />
+			<!--<s:Label id="blurb" maxWidth="{banner.width}" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sit amet accumsan nulla, ac ultricies erat. Cras sodales lacus vel dui eleifend gravida. Duis nec fringilla leo, sit amet rutrum sem. Suspendisse dapibus metus congue, placerat odio vitae, pretium felis. Fusce luctus mauris mauris, at mattis felis pulvinar sit amet. Sed eget justo fermentum, imperdiet eros quis, congue velit. Vivamus id dui sodales, ultrices sem sed, lobortis urna. In condimentum, velit vel tempor molestie, nulla lacus aliquet felis, non cursus ex ex at ligula. Aliquam sem ante, euismod ut hendrerit sit amet, ultrices ornare justo. Integer quis mattis nunc. Quisque tempor turpis sit amet fringilla consectetur. Donec viverra mollis leo, eget accumsan nulla posuere vel. Nulla purus sapien, ultrices et vehicula non, tincidunt vitae lorem.
+					 
+					 Interdum et malesuada fames ac ante ipsum primis in faucibus. Maecenas porttitor lacinia neque et lobortis. Aliquam sollicitudin quam at elit aliquam, a pretium neque euismod. Etiam sodales semper convallis. Integer vestibulum, ante sed dapibus molestie, est orci bibendum dui, eu sagittis risus erat ut felis. Nulla luctus purus sapien, et mollis leo fermentum id. Curabitur ac lectus non nibh volutpat viverra. Aliquam fermentum dolor dui. Pellentesque imperdiet rhoncus neque, et rutrum urna vestibulum vitae.
+					 
+					 Sed vehicula ipsum ut nisl venenatis tincidunt. Vivamus gravida finibus enim, quis rhoncus mi finibus tincidunt. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed tempor ante nec ornare consectetur. Fusce bibendum, risus consectetur condimentum dignissim, augue nisl viverra enim, et euismod lectus augue quis enim. Nunc venenatis vel orci ut dapibus. Morbi venenatis nisi ac tincidunt semper. Suspendisse vitae eros et ligula faucibus blandit. Nunc porta orci ipsum, ut egestas nisl feugiat sed. Cras tempor tellus tellus. Integer porttitor dolor gravida consequat pharetra. Fusce sed neque justo. Cras vehicula fermentum diam. Ut efficitur nibh dictum dapibus hendrerit." />
+			-->	
+		</s:VGroup>
+	</s:Scroller>
+
+
+	
+	
+	
+	
+</s:View>
+
+<!--
+
+
+private function scrollList(event:MouseEvent):void
+{
+//trace("scrolling"+container.viewport.verticalScrollPosition);
+if (container.viewport.verticalScrollPosition > 0){
+trace("scrolling down the view");
+ab.alpha = 0.5;
+}else{
+trace("back to the top of the scroll");
+ab.visible = true;
+ab.alpha = 1;
+}
+
+}
+private function stopScrollList(event:MouseEvent):void
+{
+//trace("stop scrolling");
+if (container.viewport.verticalScrollPosition <= 0){
+trace("back to the top of the scroll");
+ab.visible = true;
+ab.alpha = 1;
+}
+}
+-->

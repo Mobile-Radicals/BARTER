@@ -1,0 +1,249 @@
+
+<model xmlns="http://ns.adobe.com/Fiber/1.0">
+  <annotation name="ActionScriptGeneration">
+    <item name="FullyQualifyReferences">true</item>
+  </annotation>
+  <entity name="User_login">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">User_login</item>
+    </annotation>
+    <annotation name="service Group"/>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="login">
+      <item name="propertySpecifier">message,details</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="message" type="boolean" required="true"/>
+    <property name="details" type="Details[]" required="true"/>
+  </entity>
+  <entity name="Details">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">Details</item>
+    </annotation>
+    <annotation name="service Group"/>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="cardId" type="string" required="true"/>
+    <property name="id" type="string" required="true"/>
+    <property name="name" type="string" required="true"/>
+    <property name="preferences" type="string" required="true"/>
+  </entity>
+  <entity name="NoName1">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">NoName1</item>
+    </annotation>
+    <annotation name="service Group"/>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="login">
+      <item name="propertySpecifier">message,details</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="message" type="boolean" required="true"/>
+    <property name="details" type="Details[]" required="true"/>
+  </entity>
+  <entity name="NoName11">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">NoName11</item>
+    </annotation>
+    <annotation name="service Group"/>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="login">
+      <item name="propertySpecifier">message,data</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="message" type="boolean" required="true"/>
+    <property name="data" type="Data[]" required="true"/>
+  </entity>
+  <entity name="NoName12">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">NoName12</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Barter_customer</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="login">
+      <item name="propertySpecifier">message,data</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="message" type="boolean" required="true"/>
+    <property name="data" type="Data[]" required="true"/>
+  </entity>
+  <service name="Barter_customer">
+    <annotation name="ActionScriptGeneration">
+      <item name="ServiceType">HTTPMultiService</item>
+      <item name="Package">services.barter_customer</item>
+      <item name="rootURL">http://barterproject.org/mobile/</item>
+    </annotation>
+    <annotation name="ServiceTypeGroup">
+      <item name="ServiceBackendType">HTTPService</item>
+    </annotation>
+    <annotation name="ServiceConfig">
+      <item name="DEFAULT_ENTITY_PACKAGE">valueObjects</item>
+      <item name="LINKED_FILE"></item>
+    </annotation>
+    <function name="login" return-type="NoName16">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ActionScriptGeneration">
+        <item name="SerializationFilter">com.adobe.serializers.json.JSONSerializationFilter</item>
+        <item name="method">POST</item>
+        <item name="contentType">application/x-www-form-urlencoded</item>
+        <item name="requestBodyParameter">false</item>
+        <item name="url">login.php</item>
+      </annotation>
+      <annotation name="url group">
+        <item name="completeURL">http://barterproject.org/mobile/login.php</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">message,data</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParamNames">email,password</item>
+        <item name="inputParams">string,string</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="email" type="string"/>
+      <parameter name="password" type="string"/>
+    </function>
+  </service>
+  <entity name="Data">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">Data</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Barter_customer</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <annotation name="login">
+      <item name="propertySpecifier">message,data</item>
+    </annotation>
+    <property name="message" type="boolean" required="true"/>
+    <property name="data" type="Data[]" required="true"/>
+    <property name="cardId" type="string" required="true"/>
+    <property name="id" type="string" required="true"/>
+    <property name="name" type="string" required="true"/>
+    <property name="preferences" type="string" required="true"/>
+  </entity>
+  <entity name="NoName16">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">NoName16</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Barter_customer</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="login">
+      <item name="propertySpecifier">message,data</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="message" type="boolean" required="true"/>
+    <property name="data" type="Data" required="true"/>
+  </entity>
+  <entity name="NoName15">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">NoName15</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Barter_customer</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="login">
+      <item name="propertySpecifier">message,data1,data</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="message" type="boolean" required="true"/>
+    <property name="data1" type="Data1[]" required="true"/>
+    <property name="data" type="Data[]" required="true"/>
+  </entity>
+  <entity name="NoName13">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">NoName13</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Barter_customer</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="login">
+      <item name="propertySpecifier">message,data</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="message" type="boolean" required="true"/>
+    <property name="data" type="Data[]" required="true"/>
+  </entity>
+  <entity name="NoName14">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">NoName14</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Barter_customer</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="login">
+      <item name="propertySpecifier">message,data</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="message" type="boolean" required="true"/>
+    <property name="data" type="opaque[]" required="true"/>
+  </entity>
+  <entity name="Data1">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">Data1</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Barter_customer</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="cardId" type="string" required="true"/>
+    <property name="id" type="string" required="true"/>
+    <property name="name" type="string" required="true"/>
+    <property name="preferences" type="string" required="true"/>
+  </entity>
+</model>
