@@ -38,7 +38,10 @@ Mobile > These scripts are used within the Customer App mainly for demo purposes
 
 <h2>Customer App:</h2>
 Written using Adobe AIR (15) cross platform tools, with the latest Apache Flex SDK (4.13.0) and Flash Builder for the development of choice for this part of the project. This application was written in AIR to permit for cross platform usage on Android and iOS. The package uses some native features such as Dialogs (these have been compiled under the ANE extension for AIR) but the rest of the code/assets was developed in house.  
-	 
+
+If you have any questions relationg to the project, code, design please get in touch
+<a href="https://twitter.com/trade_barter" target="_blank">@trade_barter</a>
+or <a href="mailto:mark@barterproject.org" target="">mark@barterproject.org</a>
 ***
 
 <h1>The MIT License (MIT)</h1>
