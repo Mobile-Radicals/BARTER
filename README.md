@@ -25,7 +25,7 @@ tbl_associations - a table associating two users, similar to a supplementary cre
 tbl_snapshot - this is now a legacy table, and was removed from the system, this table contained data on a snapshot of what the traders thought they were trading at, for example what percent of their trades were local versus non local. 
 tbl_customer_totals - as it suggests, this table stores all the data for the trader to know exactly how much a specific customer has spent with them.
 
-Dashboard:
+<h2>Dashboard:</h2>
 This directory contains all the scripts, html and js that is used specifically with the dashboard platform. 
 
 Dev:
