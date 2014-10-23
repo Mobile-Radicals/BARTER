@@ -1,7 +1,7 @@
 BARTER
 ======
 
-The BARTER project suit consists of 2 mobile user interfaces (android_terminal and customer_app), 1 centralised mysql database and a responsive web dashboard. These platforms make up the BARTER system; the mobile and web dash have been designed to operate independently from one another, this means that if the web dash is not required users do not have to set it up on your server.
+The <a href="http://www.barterproject.org" target="_blank">BARTER</a> project suit consists of 2 mobile user interfaces (android_terminal and customer_app), 1 centralised mysql database and a responsive web dashboard. These platforms make up the BARTER system; the mobile and web dash have been designed to operate independently from one another, this means that if the web dash is not required users do not have to set it up on your server.
 
 Although some libraries were used within the project (this is noted within the code), the majority of the code, design and development for this project was developed by the following people 
 
