@@ -73,35 +73,7 @@ public class SplashscreenActivity extends Activity {
                 }, SPLASH_TIME_OUT);
             }
         }
-        nfcPendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
-
-        //intent filter to handle NDEF NFC tags detected from within the application
-        IntentFilter techDetected = new IntentFilter(NfcAdapter.ACTION_TECH_DISCOVERED);
-
-        try{
-            //try to catch all MIME types
-            techDetected.addDataType("*/*");
-        }
-        catch (IntentFilter.MalformedMimeTypeException e) {
-            throw new RuntimeException("could not add MIME type.", e);
-        }
-
-        readTagFilters = new IntentFilter[] {techDetected};
-
-        mTechLists = new String[][] {
-                new String[] {IsoDep.class.getName()},
-                new String[] {NfcA.class.getName()},
-                new String[] {NfcB.class.getName()},
-                new String[] {NfcF.class.getName()},
-                new String[] {NfcV.class.getName()},
-                new String[] {Ndef.class.getName()},
-                new String[] {NdefFormatable.class.getName()},
-                new String[] {MifareClassic.class.getName()},
-                new String[] {MifareUltralight.class.getName()}
-        };
-
-        //enable priority for current activity to detect scanned tags
-        adapter.enableForegroundDispatch(this, nfcPendingIntent, readTagFilters, mTechLists);
+        NFCState.givePriority(this);
     }
 
     @Override

@@ -1,28 +1,16 @@
 package com.trade.barter;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.nfc.NfcAdapter;
-import android.nfc.tech.IsoDep;
-import android.nfc.tech.MifareClassic;
-import android.nfc.tech.MifareUltralight;
-import android.nfc.tech.Ndef;
-import android.nfc.tech.NdefFormatable;
-import android.nfc.tech.NfcA;
-import android.nfc.tech.NfcB;
-import android.nfc.tech.NfcF;
-import android.nfc.tech.NfcV;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -32,29 +20,16 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.trade.barter.api.ApiDoohickey;
 import com.trade.barter.utils.DatabaseHandler;
 import com.trade.barter.utils.Redeem;
 import com.trade.barter.utils.Transaction;
 import com.trade.barter.utils.Utils;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 
 import google.zxing.integration.android.IntentIntegrator;
 import google.zxing.integration.android.IntentResult;
@@ -62,11 +37,7 @@ import google.zxing.integration.android.IntentResult;
 public class MainActivity extends Activity {
 
     private NfcAdapter adapter;
-    private PendingIntent nfcPendingIntent;
-    private IntentFilter[] readTagFilters;
-    private String[][] mTechLists;
 
-    private ActionBar actionBar;
     private AlertDialog dialog = null;
     boolean dialogOpened = false;
     boolean isRedeem = false, isTransaction = false;
@@ -79,71 +50,49 @@ public class MainActivity extends Activity {
     private ArrayList<Transaction> transactions;
     private ArrayList<Redeem> allRedeems;
     private ProgressDialog uploadDialog;
-    private String[] params;
     private int timeToCheck = 72;
-
+    private static MainActivity instance;
+    
+    public static Context getContext()
+    {
+    	return instance.getApplicationContext();
+    }
+    
+    public static MainActivity getInstance()
+    {
+    	return instance;
+    }
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        instance=this;
         setContentView(R.layout.activity_main);
 
-        //declare an NFC adapter
+        db = new DatabaseHandler(this.getApplicationContext());
         adapter = NfcAdapter.getDefaultAdapter(this);
-
-        //check if NFC is enabled
-        boolean nfcEnabled = adapter.isEnabled();
-        if(!nfcEnabled){
-            Toast.makeText(getApplicationContext(), "Please activate NFC then press Back to return to the application!", Toast.LENGTH_LONG).show();
-            startActivityForResult(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS), 0);
-        }
-
-        Button transactionButton = (Button) findViewById(R.id.transactionBtn);
         Typeface font = Typeface.createFromAsset(getAssets(), "square.ttf");
-        transactionButton.setTypeface(font);
-        transactionButton.setOnClickListener(new View.OnClickListener() {
+        settings = this.getSharedPreferences(getString(R.string.preferences), 0);
+        editor = settings.edit();
+        
+        NFCState.check(this);       
+
+        Button syncButton = createButton(R.id.activityBtn,font,switchActivityListener(SyncActivity.class));
+        Button profileButton = createButton(R.id.profileBtn,font,switchActivityListener(ProfileActivity.class));
+        Button transactionButton = createButton(R.id.transactionBtn,font,new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 transactionAlert();
             }
         });
-
-        Button syncButton = (Button) findViewById(R.id.activityBtn);
-        Typeface font1 = Typeface.createFromAsset(getAssets(), "square.ttf");
-        syncButton.setTypeface(font1);
-        syncButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), SyncActivity.class));
-            }
-        });
-
-        Button profileButton = (Button) findViewById(R.id.profileBtn);
-        Typeface font2 = Typeface.createFromAsset(getAssets(), "square.ttf");
-        profileButton.setTypeface(font2);
-        profileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
-            }
-        });
-
-        Button loyaltyButton = (Button) findViewById(R.id.redeemBtn);
-        Typeface font3 = Typeface.createFromAsset(getAssets(), "square.ttf");
-        loyaltyButton.setTypeface(font3);
-        loyaltyButton.setOnClickListener(new View.OnClickListener() {
+        Button loyaltyButton = createButton(R.id.redeemBtn,font,new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 redeemAlert();
             }
         });
 
-        actionBar = this.getActionBar();
-        actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.charcole_gray)));
-
-        settings = this.getSharedPreferences(getString(R.string.preferences), 0);
-        //save the type of the transaction to the shared preferences object
-        editor = settings.edit();
-        db = new DatabaseHandler(this.getApplicationContext());
+        getActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.charcole_gray)));
 
         try {
             if(settings.getBoolean("firstLogin", false) == false){
@@ -158,10 +107,29 @@ public class MainActivity extends Activity {
         }
     }
 
+
+    private Button createButton(int id, Typeface font, View.OnClickListener onClickListener)
+    {
+        Button button = (Button) findViewById(id);
+        button.setTypeface(font);
+        button.setOnClickListener(onClickListener);
+        return button;
+    }
+
+    private View.OnClickListener switchActivityListener(final Class<? extends Activity> clazz)
+    {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), clazz));
+            }
+        };
+    }
+
     public void scanCardDialog(String interactionType){
 
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-        //dialog.setView(getLayoutInflater().inflate(R.layout.alert_dialog, null));
+     
         if (interactionType == "transaction")
         {
             dialog.setView(getLayoutInflater().inflate(R.layout.alert_dialog, null));
@@ -184,8 +152,8 @@ public class MainActivity extends Activity {
         String nfcCardID = Utils.ByteArrayToHexString(nfcTag);
         //if the application detects an NFC event and the alert window is opened - navigate to the registration of the NFC card
         if (intent.getAction().equals(NfcAdapter.ACTION_TECH_DISCOVERED)){
-            Intent i = new Intent();
-            i.putExtra("nfcCardID", nfcCardID);
+            Intent newIntent = new Intent();
+            newIntent.putExtra("nfcCardID", nfcCardID);
 
             if(isRedeem){
                 isRedeem = false;
@@ -195,14 +163,14 @@ public class MainActivity extends Activity {
                     return;
                 }
                 else{
-                    i.setClassName(getApplicationContext(), RedeemActivity.class.getName());
+                    newIntent.setClassName(getApplicationContext(), RedeemActivity.class.getName());
                     editor.putString("redeem_type", "mobile_nfc");
                     editor.commit();
                 }
             }
             else {
                 isTransaction = false;
-                i.setClassName(getApplicationContext(), TransactionActivity.class.getName());
+                newIntent.setClassName(getApplicationContext(), TransactionActivity.class.getName());
                 editor.putString("trans_type", "mobile_nfc");
                 editor.commit();
             }
@@ -211,9 +179,9 @@ public class MainActivity extends Activity {
                 dialog.dismiss();
             }
             catch (Exception e){
-                Log.d(getString(R.string.app_name), "Dialog exception!");
+                Log.d(getString(R.string.app_name), "Dialog exception! "+e.toString());
             }
-            startActivity(i);
+            startActivity(newIntent);
         }
         else{
             isTransaction = isRedeem = false;
@@ -229,51 +197,16 @@ public class MainActivity extends Activity {
             startActivity(new Intent(this, SigninActivity.class));
         }
 
-        if(adapter != null){
-            //check if NFC is enabled
-            boolean nfcEnabled = adapter.isEnabled();
-
-            if(!nfcEnabled){
-                Toast.makeText(getApplicationContext(), "Please activate NFC then press Back to return to the application!", Toast.LENGTH_LONG).show();
-                startActivityForResult(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS), 0);
-            }
-        }
-        nfcPendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
-
-        //intent filter to handle NDEF NFC tags detected from within the application
-        IntentFilter techDetected = new IntentFilter(NfcAdapter.ACTION_TECH_DISCOVERED);
-
-        try{
-            //try to catch all MIME types
-            techDetected.addDataType("*/*");
-        }
-        catch (IntentFilter.MalformedMimeTypeException e) {
-            throw new RuntimeException("could not add MIME type.", e);
-        }
-
-        readTagFilters = new IntentFilter[] {techDetected};
-
-        mTechLists = new String[][] {
-                new String[] {IsoDep.class.getName()},
-                new String[] {NfcA.class.getName()},
-                new String[] {NfcB.class.getName()},
-                new String[] {NfcF.class.getName()},
-                new String[] {NfcV.class.getName()},
-                new String[] {Ndef.class.getName()},
-                new String[] {NdefFormatable.class.getName()},
-                new String[] {MifareClassic.class.getName()},
-                new String[] {MifareUltralight.class.getName()}
-        };
-
-        //enable priority for current activity to detect scanned tags
-        adapter.enableForegroundDispatch(this, nfcPendingIntent, readTagFilters, mTechLists);
+        if(adapter != null)
+            NFCState.check(this);
+       
+        NFCState.givePriority(this);
     }
 
     @Override
     protected void onPause(){
         super.onPause();
-        if(adapter != null)
-            adapter.disableForegroundDispatch(this);
+        NFCState.onPause(this);
     }
 
     @Override
@@ -289,12 +222,9 @@ public class MainActivity extends Activity {
             syncItem.setVisible(false);
             Button btnActivity=(Button)findViewById(R.id.activityBtn);
             btnActivity.setEnabled(false);
-            //findViewById(R.id.activityBtn).setVisibility(View.INVISIBLE);
             btnActivity.setBackground(getResources().getDrawable(R.drawable.menu_button_disabled));
             btnActivity.setTextColor(getResources().getColor(R.color.barter_grey));
-
             btnActivity.setCompoundDrawablesWithIntrinsicBounds(R.drawable.activity_icon_disabled, 0, 0, 0);
-            //findViewById(R.id.activityBtn).setTextColor(Color.BLACK);
         }
         return true;
     }
@@ -697,402 +627,17 @@ public class MainActivity extends Activity {
             transactions = db.getTransactions();
 
             if(allRedeems.size() > 0){
-                uploadRedeems(allRedeems);
+            	ApiDoohickey.getInstance().uploadRedeems(uploadDialog,allRedeems,false,null);
             }
 
             if(transactions.size() != 0){
                 uploadDialog.show();
-                uploadAllTransactions();
+                ApiDoohickey.getInstance().uploadAllTransactions(uploadDialog,transactions);
             }
             else{
-                getSync();
+                ApiDoohickey.getInstance().getSync(uploadDialog);
             }
         }
     }
 
-    private class SyncRedeem extends AsyncTask<String, Void, String> {
-
-        protected StringBuilder sb;
-        protected String result;
-        protected InputStream is;
-
-        @Override
-        protected void onPreExecute() {}
-
-        @Override
-        protected String doInBackground(String... params) {
-
-            try {
-                HttpClient client = new DefaultHttpClient();
-                HttpPost post = new HttpPost(params[0]);
-
-                post.setHeader("Content-type", "application/json");
-                StringEntity se = new StringEntity(params[1]);
-                post.setEntity(se);
-                //set the response
-                HttpResponse response = client.execute(post);
-                HttpEntity entity = response.getEntity();
-                is = entity.getContent();
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-                Log.i(getString(R.string.app_name), "Error connecting "+e.getMessage());
-            }
-
-            //handle the response
-            try {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
-                sb = new StringBuilder();
-                sb.append(reader.readLine() + "\n");
-                String line = "0";
-
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line + "\n");
-                }
-                reader.close();
-                is.close();
-                result = sb.toString();
-                return result;
-            } catch (Exception e) {
-                Log.e(getString(R.string.app_name), "Error converting result " + e.toString());
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-
-            try{
-                JSONObject allData = new JSONObject(result);
-                Boolean received = allData.getBoolean("received");
-                if(received){
-                    Log.i(getString(R.string.app_name), "All redeems have been successfully uploaded to the database.");
-
-                    Redeem redeem;
-
-                    for(Iterator<Redeem> it = allRedeems.iterator(); it.hasNext();){
-
-                        redeem = it.next();
-                        redeem.setSynced(true);
-
-                        it.remove();
-                        //update the current transaction into the database
-                        db.updateRedeemStatus(redeem.getRedeemID());
-                    }
-
-                    ((TextView) findViewById(R.id.textView2)).setText("0");
-                    uploadDialog.dismiss();
-                    Toast.makeText(getApplicationContext(), "All redeems have been successfully uploaded to the database.", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    Log.i(getString(R.string.app_name), "There was a problem while saving your request!" + allData.getJSONArray("notEntered"));
-                    uploadDialog.dismiss();
-                    Toast.makeText(getApplicationContext(), "There seems to be an error while uploading your request. Please try again later.", Toast.LENGTH_LONG).show();
-                }
-            }
-            catch (Exception e) {
-                uploadDialog.dismiss();
-                Log.e(getString(R.string.app_name), "Yoo: " + e.getMessage());
-            }
-        }
-    }
-
-    public void uploadRedeems(ArrayList<Redeem> allRedeems){
-        //create an array of json object of type transaction
-        JSONArray jsonArrayRedeems = new JSONArray();
-
-        for(Redeem redeem: allRedeems){
-
-            //create a JSONObject for every transaction
-            JSONObject redeemJson = new JSONObject();
-            try {
-                redeemJson.put("trader_id", settings.getString("cardId",null));
-                redeemJson.put("redeem_id", redeem.getRedeemID());
-                redeemJson.put("consumer_id", redeem.getConsumerRFID());
-                redeemJson.put("redeem_type", redeem.getRedeemType());
-                redeemJson.put("points_deducted", redeem.getPointsDeducted());
-                redeemJson.put("redeem_timestamp", redeem.getTimestamp());
-
-            } catch (Exception e) {
-                Log.e(getString(R.string.app_name), "JSON exception from redeem data.");
-            }
-
-            Log.i(getString(R.string.app_name), "Type: " + redeem.getRedeemType());
-
-            jsonArrayRedeems.put(redeemJson);
-        }
-
-        //convert the JSON to string
-        String dataToSend = jsonArrayRedeems.toString();
-
-        //create the parameters to be passed to the network handler
-        params = new String[2];
-        params[0] = getString(R.string.redeem_url);
-        params[1] = dataToSend;
-
-        //send the consumers' data to the server
-        SyncRedeem syncRedeem = new SyncRedeem();
-        syncRedeem.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, params);
-    }
-
-    public void uploadAllTransactions(){
-        //create an array of json object of type transaction
-        JSONArray jsonArrayTransaction = new JSONArray();
-
-        for(Transaction transaction : transactions){
-
-            //create a JSONObject for every transaction
-            JSONObject transactionJson = new JSONObject();
-            try {
-                transactionJson.put("trader_id", settings.getString("cardId", null));
-                transactionJson.put("trans_id", transaction.getTransactionID());
-                transactionJson.put("consumer_id", transaction.getConsumerID());
-                transactionJson.put("trans_lat", transaction.getLatitude());
-                transactionJson.put("trans_lon", transaction.getLongitude());
-                transactionJson.put("trans_type", transaction.getType());
-                transactionJson.put("trans_origin", transaction.getOrigin());
-                transactionJson.put("trans_price", transaction.getPrice());
-                transactionJson.put("trans_points", transaction.getPoints());
-                transactionJson.put("trans_time", transaction.getTimestamp());
-            } catch (Exception e) {
-                Log.e(getString(R.string.app_name), "JSON exception from consumer's data");
-            }
-
-            jsonArrayTransaction.put(transactionJson);
-        }
-
-        //convert the JSON to string
-        String dataToSend = jsonArrayTransaction.toString();
-
-        //create the parameters to be passed to the network handler
-        params = new String[2];
-        params[0] = getString(R.string.auto_manual_sync_url);
-        params[1] = dataToSend;
-
-        //send the consumers' data to the server
-        SyncTransaction syncTransaction = new SyncTransaction();
-        syncTransaction.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, params);
-    }
-
-    private class SyncTransaction extends AsyncTask<String, Void, String> {
-
-        protected StringBuilder sb;
-        protected String result;
-        protected InputStream is;
-
-        @Override
-        protected void onPreExecute() {}
-
-        @Override
-        protected String doInBackground(String... params) {
-
-            try {
-                HttpClient client = new DefaultHttpClient();
-                HttpPost post = new HttpPost(params[0]);
-
-                post.setHeader("Content-type", "application/json");
-                StringEntity se = new StringEntity(params[1]);
-                post.setEntity(se);
-                //set the response
-                HttpResponse response = client.execute(post);
-                HttpEntity entity = response.getEntity();
-                is = entity.getContent();
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-                Log.i(getString(R.string.app_name), "Error connecting "+e.getMessage());
-            }
-
-            //handle the response
-            try {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
-                sb = new StringBuilder();
-                sb.append(reader.readLine() + "\n");
-                String line = "0";
-
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line + "\n");
-                }
-                reader.close();
-                is.close();
-                result = sb.toString();
-                return result;
-            } catch (Exception e) {
-                Log.e(getString(R.string.app_name), "Error converting result " + e.toString());
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-
-            try{
-                JSONObject allData = new JSONObject(result);
-                Boolean received = allData.getBoolean("received");
-
-                if(received){
-                    Log.i(getString(R.string.app_name), "All transactions have been successfully uploaded to the database");
-
-                    for(Iterator<Transaction> it = transactions.iterator(); it.hasNext();){
-                        Transaction transaction = it.next();
-                        //remove the current transaction from the transaction ArrayList
-                        it.remove();
-                        //update the current transaction into the database
-                        db.updateTransactionStatus(transaction.getTransactionID());
-                    }
-
-                    JSONArray consumersToBeUpdated = allData.getJSONArray("customerData");
-                    JSONObject traderStats = allData.getJSONObject("traderTotals");
-
-                    //parse the sync data
-                    for(int i = 0; i < consumersToBeUpdated.length(); i++){
-                        JSONObject consumer = consumersToBeUpdated.getJSONObject(i);
-                        db.overrideConsumerStats(consumer.getString("customer_id"), consumer.getInt("customer_spend"), consumer.getInt("customer_points"), consumer.getInt("customer_occurrences"), consumer.getString("timestamp"));
-                    }
-
-                    updateTraderStats(traderStats);
-
-                    uploadDialog.dismiss();
-                    Toast.makeText(getApplicationContext(), "All transactions have been successfully uploaded.", Toast.LENGTH_LONG).show();
-                }
-                else{
-                    Log.i(getString(R.string.app_name), "There was a problem while uploading the current transaction" + allData.getJSONArray("notEntered"));
-                    uploadDialog.dismiss();
-                    Toast.makeText(getApplicationContext(), "There seems to be an error while uploading your transactions. Please try again later.", Toast.LENGTH_LONG).show();
-                }
-            }
-            catch (Exception e) {
-                uploadDialog.dismiss();
-                Log.e(getString(R.string.app_name), e.getMessage());
-            }
-        }
-    }
-
-    public void getSync(){
-
-        //create a JSONObject for every transaction
-        JSONObject traderJson = new JSONObject();
-        try {
-            traderJson.put("trader_id", settings.getString("cardId", null));
-        } catch (Exception e) {
-            Log.e(getString(R.string.app_name), "JSON exception from consumer's data");
-        }
-
-        //convert the JSON to string
-        String dataToSend = traderJson.toString();
-
-        //create the parameters to be passed to the network handler
-        params = new String[2];
-        params[0] = getString(R.string.get_sync_data);
-        params[1] = dataToSend;
-
-        //send the consumers' data to the server
-        SyncConsumersTotal syncConsumer = new SyncConsumersTotal();
-        syncConsumer.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, params);
-    }
-
-    private class SyncConsumersTotal extends AsyncTask<String, Void, String> {
-
-        protected StringBuilder sb;
-        protected String result;
-        protected InputStream is;
-
-        @Override
-        protected void onPreExecute() {}
-
-        @Override
-        protected String doInBackground(String... params) {
-
-            try {
-                HttpClient client = new DefaultHttpClient();
-                HttpPost post = new HttpPost(params[0]);
-
-                post.setHeader("Content-type", "application/json");
-                StringEntity se = new StringEntity(params[1]);
-                post.setEntity(se);
-                //set the response
-                HttpResponse response = client.execute(post);
-                HttpEntity entity = response.getEntity();
-                is = entity.getContent();
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-                Log.i(getString(R.string.app_name), "Error connecting "+e.getMessage());
-            }
-
-            //handle the response
-            try {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
-                sb = new StringBuilder();
-                sb.append(reader.readLine() + "\n");
-                String line = "0";
-
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line + "\n");
-                }
-                reader.close();
-                is.close();
-                result = sb.toString();
-                return result;
-            } catch (Exception e) {
-                Log.e(getString(R.string.app_name), "Error converting result " + e.toString());
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-
-            try{
-                JSONObject allData = new JSONObject(result);
-                Boolean received = allData.getBoolean("received");
-
-                if(received){
-                    Log.i(getString(R.string.app_name), "All transactions have been successfully uploaded to the database");
-
-                    JSONArray consumersToBeUpdated = allData.getJSONArray("customerData");
-                    JSONObject traderStats = allData.getJSONObject("traderTotals");
-
-                    for(int i = 0; i < consumersToBeUpdated.length(); i++){
-                        JSONObject consumer = consumersToBeUpdated.getJSONObject(i);
-                        db.overrideConsumerStats(consumer.getString("customer_id"), consumer.getInt("customer_spend"), consumer.getInt("customer_points"), consumer.getInt("customer_occurrences"), consumer.getString("timestamp"));
-                    }
-
-                    updateTraderStats(traderStats);
-
-                    uploadDialog.dismiss();
-                    Toast.makeText(getApplicationContext(), "All data has been successfully synced.", Toast.LENGTH_LONG).show();
-                }
-                else{
-                    Log.i(getString(R.string.app_name), "There was a problem during the sync operation." + allData.getJSONArray("notEntered"));
-                    uploadDialog.dismiss();
-                    Toast.makeText(getApplicationContext(), "There was a problem during the sync operation. Please try again later.", Toast.LENGTH_LONG).show();
-                }
-            }
-            catch (Exception e) {
-                uploadDialog.dismiss();
-                Log.e(getString(R.string.app_name), e.getMessage());
-            }
-        }
-    }
-
-    private void updateTraderStats(JSONObject traderStats) throws JSONException, ParseException {
-
-        //editor.putString("totalTrans", traderStats.getString("total_trans"));
-        editor.putInt("totalMobileTransactions", traderStats.getInt("total_mobile_trans"));
-        editor.putInt("totalWebTransactions", traderStats.getInt("total_web_trans"));
-
-        editor.putInt("totalNonBarterTransactions", traderStats.getInt("total_non_barter_trans"));
-        editor.putInt("totalNonLocalTransactions", traderStats.getInt("total_non_local_trans"));
-
-        editor.putString("totalPriceGoods", traderStats.getString("total_price_goods"));
-        editor.putString("totalPriceServices", traderStats.getString("total_price_services"));
-        editor.putString("totalPriceBoth", traderStats.getString("total_price_both"));
-        editor.putString("lastUploaded", Utils.convertServerTimestamp(traderStats.getString("last_uploaded")));
-        editor.putString("lastCheck", Utils.convertServerTimestamp(traderStats.getString("last_uploaded")));
-        editor.commit();
-
-        //reset the options menu
-        invalidateOptionsMenu();
-    }
 }
